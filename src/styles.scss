@@ -1,3 +1,15 @@
+@use 'app/shared/styles/tools/container' as c;
+
 * {
     box-sizing: border-box;
+}
+
+.container {
+    @include c.container;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
 }

@@ -1,3 +1,101 @@
+@use '../../styles/tools/container' as c;
+
 :host {
   display: block;
+}
+
+.header {
+  background-color: black;
+  padding: 12px 0;
+
+  &__content {
+    @include c.container;
+    display: flex;
+    align-items: center;
+    gap: 50px;
+  }
+
+  &__menu-btn {
+    width: 30px;
+    height: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    // margin-left: 50px;
+
+    &-line {
+      height: 3px;
+      width: 100%;
+      background: yellow;
+      display: block;
+      border-radius: 3px;
+    }
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    width: auto;
+    height: 36px; 
+    // margin-left: 50px;
+    // margin-right: 50px;
+
+    img {
+      height: 100%; 
+      width: auto; 
+      display: block;
+    }
+  }
+
+  &__search {
+    flex: 1;
+    display: flex;
+
+    &-input {
+      flex: 1;
+      padding: 12px 14px;
+      border: none;
+      border-radius: 8px 0 0 8px;
+      font-size: 15px;
+    }
+
+    &-btn {
+      background: yellow;
+      border: none;
+      color: black;
+      padding: 12px 20px;
+      border-radius: 0 8px 8px 0;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  }
+
+  &__icons {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+
+  &__icon {
+    width: 30px;
+    height: 30px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+
+    &.cart {
+      background-image: url('/assets/images/icons/cart.svg');
+      
+    }
+
+    &.user {
+      background-image: url('/assets/images/icons/user.svg');
+    }
+  }
 }
