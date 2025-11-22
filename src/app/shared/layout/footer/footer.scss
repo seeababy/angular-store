@@ -1,3 +1,87 @@
+@use '../../styles/tools/container' as c;
+
 :host {
   display: block;
+}
+
+.footer {
+  &__top {
+    background-color: yellow;
+    height: 6px;
+  }
+
+  &__bottom {
+    background-color: black;
+    padding: 30px 0;
+  }
+
+  &__content {
+    @include c.container;
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  &__col {
+    color: yellow;
+    min-width: 150px;
+  }
+
+  &__title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  &__icons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  &__icon {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-top: 8px;
+    align-items: center;
+    gap: 16px;
+
+    &.facebook {
+      background-image: url('/assets/images/icons/facebook.svg');
+    }
+
+    &.instagram {
+      background-image: url('/assets/images/icons/instagram.svg');
+    }
+
+    &.tiktok {
+      background-image: url('/assets/images/icons/tiktok.svg');
+    }
+  }
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    a {
+      color: lightyellow;
+      text-decoration: none;
+      font-size: 14px;
+
+      &:hover {
+        color: yellow;
+      }
+    }
+  }
 }
