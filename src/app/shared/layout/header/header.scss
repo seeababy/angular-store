@@ -27,6 +27,17 @@
     border: none;
     cursor: pointer;
     padding: 0;
+    transition: 0.2s ease;
+    border-radius: 6px;
+
+    &:hover {
+      background: rgba(255, 255, 0, 0.15); 
+      transform: scale(1.08);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
 
     &-line {
       height: 3px;
@@ -40,13 +51,11 @@
   &__logo {
     display: flex;
     align-items: center;
-    width: auto;
-    height: 36px; 
+    height: 36px;
 
     img {
-      height: 100%; 
-      width: auto; 
-      display: block;
+      height: 100%;
+      width: auto;
     }
   }
 
@@ -70,6 +79,16 @@
       border-radius: 0 8px 8px 0;
       font-weight: 600;
       cursor: pointer;
+      transition: 0.2s ease;
+
+      &:hover {
+        background: #f1c500;
+        transform: scale(1.03);
+      }
+            
+      &:active {
+        transform: scale(0.97);
+      }
     }
   }
 
@@ -85,12 +104,20 @@
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
+    background-color: transparent;
     border: none;
     cursor: pointer;
+    transition: 0.2s ease;
+    padding: 4px;
+
+    &:hover {
+      background-color: rgba(255, 255, 0, 0.15); 
+      border-radius: 8px; 
+      transform: scale(1.05);
+    }
 
     &.cart {
       background-image: url('/assets/images/icons/cart.svg');
-      
     }
 
     &.user {
