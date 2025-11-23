@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { Product } from '../../models/product.model';
 
 @Component({
   selector: 'app-card',
@@ -8,4 +9,14 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   standalone: true,
   imports: [],
 })
-export class Card { }
+export class Card {
+  product = input<Product>(); 
+  addToCart = output<number>();
+
+onAdd() {
+  const id = this.product()?.id;
+  if (id !== undefined) {
+    this.addToCart.emit(id);
+  }
+}
+}

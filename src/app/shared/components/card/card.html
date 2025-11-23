@@ -1,1 +1,11 @@
-<p>card works!</p>,
+<div class="card">
+    <img [src]="product()?.image" alt="product" class="card__image" />
+    
+    <a class="card__title">{{ product()?.title }}</a>
+    
+    <div class="card__bottom">
+        <span class="card__price">{{ product()?.price }} ₴</span>
+    
+        <button class="card__cart" (click)="onAdd()"></button>
+    </div>
+</div>

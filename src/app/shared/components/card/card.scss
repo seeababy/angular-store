@@ -1,3 +1,80 @@
 :host {
   display: block;
 }
+
+.card {
+  background: white;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  word-wrap: wrap;
+  gap: 10px;
+  transition: 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  }
+
+  &__image {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+    cursor: pointer;
+
+    img {
+        object-fit: contain;
+        width: 100%;
+        height: auto;
+        transition: 0.3s ease;
+    
+        &:hover {
+          scale: 1.04;
+        }
+      }
+  }
+
+  &__title {
+    display: block;
+    font-size: 18px;
+    color: black;
+    font-weight: 600;
+    text-decoration: none;
+    min-height: 42px;
+    margin-top: 10px;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  &__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__price {
+    font-size: 20px;
+    color: black;
+    font-weight: 700;
+  }
+
+  &__cart {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    background: url('/assets/images/icons/cart_black.svg') center/18px no-repeat;
+    transition: 0.2s ease;
+
+    &:hover {
+      background-color: yellow;
+      transform: scale(1.1);
+    }
+  }
+}
