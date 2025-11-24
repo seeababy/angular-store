@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Product } from '../../../../shared/models/product.model';
+import { Product } from '../../../../shared/entities/interfaces/product.interface';
 import { Card } from '../../../../shared/components/card/card';
+import { Slider } from "../../../../shared/components/slider/slider";
 
 @Component({
   selector: 'app-home-page',
@@ -8,7 +9,7 @@ import { Card } from '../../../../shared/components/card/card';
   styleUrl: './home-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [Card],
+  imports: [Card, Slider],
 })
 export class HomePage { 
   products: Product[] = [

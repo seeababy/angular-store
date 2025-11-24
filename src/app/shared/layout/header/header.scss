@@ -1,5 +1,3 @@
-@use '../../styles/tools/container' as c;
-
 :host {
   position: sticky;
   top: 0;
@@ -11,7 +9,6 @@
   padding: 12px 0;
 
   &__content {
-    @include c.container;
     display: flex;
     align-items: center;
     gap: 50px;
@@ -98,7 +95,7 @@
     gap: 30px;
   }
 
-  &__icon {
+  &__btn {
     width: 30px;
     height: 30px;
     background-size: contain;
@@ -110,18 +107,14 @@
     transition: 0.2s ease;
     padding: 4px;
 
+    .icon {
+      color: yellow;
+    }
+
     &:hover {
       background-color: rgba(255, 255, 0, 0.15); 
       border-radius: 8px; 
       transform: scale(1.05);
-    }
-
-    &.cart {
-      background-image: url('/assets/images/icons/cart.svg');
-    }
-
-    &.user {
-      background-image: url('/assets/images/icons/user.svg');
     }
   }
 }
