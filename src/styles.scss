@@ -1,15 +1,20 @@
-@use 'app/shared/styles/tools/container' as c;
+@use 'app/shared/styles/tools/container';
+@use '@splidejs/splide/css';
+@use '@splidejs/splide/css/core';
 
 * {
     box-sizing: border-box;
 }
 
-.container {
-    @include c.container;
-}
 
 html,
 body {
     margin: 0;
     padding: 0;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+mat-icon.mat-icon {
+    display: flex;
 }

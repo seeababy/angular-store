@@ -1,4 +1,5 @@
 <div class="products">
+    <app-slider></app-slider>
     @for (p of products; track p.id) {
     <app-card [product]="p" (addToCart)="addToCart($event)" />
     }
