@@ -1,3 +1,6 @@
-export const homeSliderItems = [
-
+export const homeSliderItems: string[] = [
+    'airpods',
+    'ipad',
+    'iphone',
+    'macbook'
 ];
