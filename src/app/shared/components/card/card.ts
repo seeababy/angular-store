@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { Product } from '../../entities/interfaces/product.interface';
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-card',
@@ -7,7 +8,7 @@ import { Product } from '../../entities/interfaces/product.interface';
   styleUrl: './card.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [],
+  imports: [MatIcon],
 })
 export class Card {
   product = input<Product>(); 

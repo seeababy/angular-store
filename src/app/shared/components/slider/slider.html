@@ -1,9 +1,15 @@
-<section class="splide" aria-label="Splide Basic HTML Example">
+<section class="splide" aria-label="Tech Slider">
+    <div class="splide__arrows">
+        <button class="splide__arrow splide__arrow--prev">‹</button>
+        <button class="splide__arrow splide__arrow--next">›</button>
+    </div>
     <div class="splide__track">
         <ul class="splide__list">
-            <li class="splide__slide">Slide 01</li>
-            <li class="splide__slide">Slide 02</li>
-            <li class="splide__slide">Slide 03</li>
+            @for (item of items(); track item) {
+            <li class="splide__slide">
+                <img [src]="'assets/images/slider-images/' + item + '.jpg'" [alt]="item" />
+            </li>
+            }
         </ul>
     </div>
 </section>

@@ -3,16 +3,26 @@ import Splide from '@splidejs/splide';
 
 @Component({
   selector: 'app-slider',
-  standalone: true,
-  imports: [],
   templateUrl: './slider.html',
   styleUrl: './slider.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [],
 })
 export class Slider implements AfterViewInit {
-  items = input<any[]>();
+  items = input<string[]>();
 
   ngAfterViewInit(): void {
-    new Splide( '.splide' ).mount();
+    new Splide( '.splide', {
+      type: 'loop',
+      perPage: 3,
+      perMove: 1,
+      gap: '10px',
+      autoplay: true,
+      interval: 10000,
+      arrows: true,
+      pagination: false,
+      speed: 900,
+    }).mount();
   }
 }
