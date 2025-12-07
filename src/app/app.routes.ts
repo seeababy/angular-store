@@ -3,10 +3,18 @@ import { AppRoutesConfig } from './app.routes-config';
 
 export const routes: Routes = [
     {
-        path: AppRoutesConfig.Home,
-        loadComponent: () =>
-            import('./feature/home/pages/home-page/home-page').then(
-                (m) => m.HomePage
+        path: '',
+        loadChildren: () =>
+            import('./feature/layout/routes/routes').then(
+                (m) => m.routes
+            ),
+    },
+
+    {
+        path: AppRoutesConfig.Auth,
+        loadChildren: () =>
+            import('./feature/auth/routes/routes').then(
+                (m) => m.routes
             ),
     }
 ];

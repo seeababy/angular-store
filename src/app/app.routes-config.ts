@@ -1,3 +1,5 @@
 export enum AppRoutesConfig {
-  Home = '',
+  Home = 'home',
+  Auth = 'auth',
+  Registration = 'register',
 }
