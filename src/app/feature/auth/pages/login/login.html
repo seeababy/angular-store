@@ -1,5 +1,5 @@
-<div class="registration-wrapper">
-    <form [formGroup]="formGroup" (ngSubmit)="submit()" class="registration-form">
+<div class="login-wrapper">
+    <form [formGroup]="formGroup" (ngSubmit)="submit()" class="login-form">
 
         <mat-form-field class="input">
             <mat-label>Username</mat-label>
@@ -7,17 +7,12 @@
         </mat-form-field>
 
         <mat-form-field class="input">
-            <mat-label>Email</mat-label>
-            <input matInput formControlName="email" />
-        </mat-form-field>
-
-        <mat-form-field  class="input">
             <mat-label>Password</mat-label>
             <input matInput type="password" formControlName="password" />
         </mat-form-field>
 
         <button mat-raised-button type="submit" class="btn">
-            Зареєструвати
+            Вхід
         </button>
 
     </form>

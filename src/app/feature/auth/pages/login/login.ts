@@ -6,9 +6,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-registration',
-  templateUrl: './registration.html',
-  styleUrl: './registration.scss',
+  selector: 'app-login',
+  templateUrl: './login.html',
+  styleUrl: './login.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
@@ -18,14 +18,12 @@ import { MatButtonModule } from '@angular/material/button';
     MatButtonModule
   ],
 })
-export class Registration {
-
+export class Login {
   auth = inject(Auth);
   cdr = inject(ChangeDetectorRef);
 
   formGroup = new FormGroup({
     username: new FormControl('', Validators.required),
-    email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
   });
 
@@ -34,8 +32,8 @@ export class Registration {
 
     const data = this.formGroup.value;
 
-    this.auth.registration(data).subscribe(res => {
-      console.log('Registration success:', res);
+    this.auth.login(data).subscribe(res => {
+      console.log('Login success:', res);
 
       this.formGroup.reset();
 
