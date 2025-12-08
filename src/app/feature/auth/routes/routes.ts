@@ -8,5 +8,12 @@ export const routes: Routes = [
             import('../pages/registration/registration').then(
                 (m) => m.Registration
             ),
+    },
+    {
+        path: AppRoutesConfig.Login,
+        loadComponent: () =>
+            import('../pages/login/login').then(
+                (m) => m.Login
+            ),
     }
 ];
