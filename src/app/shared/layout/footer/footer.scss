@@ -70,4 +70,36 @@
       }
     }
   }
+  
+  @media (max-width: 576px) {
+    .footer__content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px 10px;
+    }
+
+    .footer__col {
+      width: calc(50% - 10px);
+      min-width: 0;
+    }
+
+    .footer__title {
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .footer__list a {
+      font-size: 12px;
+    }
+
+    .footer__icons {
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .footer__icon {
+      width: 26px;
+      height: 26px;
+    }
+  }
 }
