@@ -16,5 +16,5 @@ export const routes: Routes = [
             import('./feature/auth/routes/routes').then(
                 (m) => m.routes
             ),
-    }
+    },
 ];

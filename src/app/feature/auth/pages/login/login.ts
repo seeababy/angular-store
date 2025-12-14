@@ -4,6 +4,10 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angula
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
+import { LoginData } from '../entities/login.interface';
+import { catchError, of } from 'rxjs';
+import { Router } from '@angular/router';
+import { AppRoutesConfig } from '../../../../app.routes-config';
 
 @Component({
   selector: 'app-login',
@@ -21,23 +25,21 @@ import { MatButtonModule } from '@angular/material/button';
 export class Login {
   auth = inject(Auth);
   cdr = inject(ChangeDetectorRef);
+  router = inject(Router);
 
   formGroup = new FormGroup({
-    username: new FormControl('', Validators.required),
+    email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
   });
 
   submit() {
     if (this.formGroup.invalid) return;
 
-    const data = this.formGroup.value;
-
-    this.auth.login(data).subscribe(res => {
-      console.log('Login success:', res);
-
-      this.formGroup.reset();
-
-      this.cdr.detectChanges();
+    this.auth.login(this.formGroup.value as LoginData).pipe(
+      catchError(() => of(null)),
+    ).subscribe(() => {
+          this.formGroup.reset();
+          this.router.navigate(['/', AppRoutesConfig.Home]);
     });
   }
 }

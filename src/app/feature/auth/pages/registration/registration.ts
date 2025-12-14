@@ -4,6 +4,10 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angula
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
+import { RegistrationData } from '../entities/registration.interface';
+import { catchError, of } from 'rxjs';
+import { Router } from '@angular/router';
+import { AppRoutesConfig } from '../../../../app.routes-config';
 
 @Component({
   selector: 'app-registration',
@@ -22,6 +26,7 @@ export class Registration {
 
   auth = inject(Auth);
   cdr = inject(ChangeDetectorRef);
+  router = inject(Router);
 
   formGroup = new FormGroup({
     username: new FormControl('', Validators.required),
@@ -32,14 +37,11 @@ export class Registration {
   submit() {
     if (this.formGroup.invalid) return;
 
-    const data = this.formGroup.value;
-
-    this.auth.registration(data).subscribe(res => {
-      console.log('Registration success:', res);
-
+    this.auth.registration(this.formGroup.value as RegistrationData).pipe(
+      catchError(() => of(null)),
+    ).subscribe(() => {
       this.formGroup.reset();
-
-      this.cdr.detectChanges();
+      this.router.navigate(['/', AppRoutesConfig.Home]);
     });
   }
 }
