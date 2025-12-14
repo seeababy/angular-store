@@ -23,6 +23,20 @@ export class Slider implements AfterViewInit {
       arrows: true,
       pagination: false,
       speed: 900,
+
+      breakpoints: {
+        768: {
+          perPage: 2,
+          arrows: false,
+          gap: '8px',
+        },
+
+        480: {
+          perPage: 2,
+          arrows: false,
+          gap: '6px',
+        },
+      },
     }).mount();
   }
 }
