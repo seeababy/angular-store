@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { inject } from '@angular/core';
-import { LoginData } from '../../../shared/entities/interfaces/login.interface';
+import { LoginData } from '../pages/entities/login.interface';
+import { RegistrationData } from '../pages/entities/registration.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +15,11 @@ export class Auth {
   ) { 
   }
 
-  registration(data: any) {
+  registration(data: RegistrationData) {
     return this.http.post(`${this.apiUrl}/auth/registration`, data);
   }
 
-  login(data: any) {
+  login(data: LoginData) {
     return this.http.post(`${this.apiUrl}/auth/login`, data);
   }
 }
