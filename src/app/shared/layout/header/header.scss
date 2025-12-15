@@ -1,17 +1,16 @@
 :host {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  display: block;
 }
 
 .header {
+  width: 100%;
   background-color: black;
   padding: 12px 0;
 
   &__content {
     display: flex;
     align-items: center;
-    gap: 50px;
+    gap: 24px;
   }
 
   &__menu-btn {
@@ -24,11 +23,11 @@
     border: none;
     cursor: pointer;
     padding: 0;
-    transition: 0.2s ease;
     border-radius: 6px;
+    transition: 0.2s ease;
 
     &:hover {
-      background: rgba(255, 255, 0, 0.15); 
+      background: rgba(255, 255, 0, 0.15);
       transform: scale(1.08);
     }
 
@@ -37,11 +36,11 @@
     }
 
     &-line {
-      height: 3px;
       width: 100%;
+      height: 3px;
       background: yellow;
-      display: block;
       border-radius: 3px;
+      display: block;
     }
   }
 
@@ -57,13 +56,15 @@
   }
 
   &__search {
-    flex: 1;
     display: flex;
+    width: 100%;
+    margin: 0 12px;
 
     &-input {
-      flex: 1;
+      width: 100%;
       padding: 12px 14px;
       border: none;
+      outline: none;
       border-radius: 8px 0 0 8px;
       font-size: 15px;
     }
@@ -80,11 +81,15 @@
 
       &:hover {
         background: #f1c500;
-        transform: scale(1.03);
+        transform: scale(1.08);
       }
-            
+
       &:active {
-        transform: scale(0.97);
+        transform: scale(0.95);
+      }
+
+      mat-icon {
+        display: none;
       }
     }
   }
@@ -92,30 +97,94 @@
   &__icons {
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 28px;
+    margin-left: auto;
   }
 
   &__btn {
     width: 30px;
     height: 30px;
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-color: transparent;
+    background: transparent;
     border: none;
     cursor: pointer;
-    transition: 0.2s ease;
     padding: 4px;
+    border-radius: 8px;
+    transition: 0.2s ease;
 
     .icon {
       color: yellow;
     }
 
     &:hover {
-      background-color: rgba(255, 255, 0, 0.15); 
-      border-radius: 8px; 
-      transform: scale(1.05);
+      background: rgba(255, 255, 0, 0.15);
+      transform: scale(1.08);
+    }
+
+    &:active {
+      transform: scale(0.95);
     }
   }
 }
 
+@media (max-width: 360px) {
+  .header {
+    padding: 16px 0;
+
+    &__content {
+      gap: 14px;
+    }
+
+    &__menu-btn {
+      width: 30px;
+      height: 20px;
+
+      &-line {
+        width: 20px;
+        height: 2px;
+      }
+    }
+
+    &__logo {
+      height: 30px;
+    }
+
+    &__search {
+      margin: 0;
+      max-width: 210px;
+
+      &-input {
+        padding: 9px 10px;
+        font-size: 13px;
+      }
+
+      &-btn {
+        width: 36px;
+        padding: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0;
+
+        mat-icon {
+          display: block;
+          font-size: 20px;
+          color: black;
+        }
+      }
+    }
+
+    &__icons {
+      gap: 14px;
+    }
+
+    &__btn {
+      width: 28px;
+      height: 28px;
+      padding: 3px;
+
+      .icon {
+        font-size: 22px;
+      }
+    }
+  }
+}
