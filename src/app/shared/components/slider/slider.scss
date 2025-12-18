@@ -2,7 +2,6 @@
   display: block;
   width: 100%;
   max-width: 1000px;
-  margin: 0 0 0 200px;
 }
 
 .splide__slide img {
@@ -42,14 +41,6 @@
   right: 5px;
 }
 
-:host {
-  display: block;
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 0 0 200px;
-}
-
-/* Центрування на планшетах і телефонах */
 @media (max-width: 768px) {
   :host {
     margin: 0 auto;
@@ -70,7 +61,6 @@
   border-radius: 8px;
 }
 
-/* Менший розмір картинок на мобільних */
 @media (max-width: 480px) {
   .splide__slide img {
     height: 160px;

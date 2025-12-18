@@ -1,6 +1,6 @@
+<app-slider [items]="sliderImages"></app-slider>
 <div class="products">
-    <app-slider [items]="sliderImages"></app-slider>
     @for (p of products; track p.id) {
-    <app-card [product]="p" (addToCart)="addToCart($event)" />
+    <app-card [product]="p"/>
     }
 </div>

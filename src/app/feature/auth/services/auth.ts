@@ -16,10 +16,10 @@ export class Auth {
   }
 
   registration(data: RegistrationData) {
-    return this.http.post(`${this.apiUrl}/auth/registration`, data);
+    return this.http.post<{token: string}>(`${this.apiUrl}/auth/registration`, data);
   }
 
   login(data: LoginData) {
-    return this.http.post(`${this.apiUrl}/auth/login`, data);
+    return this.http.post<{token: string}>(`${this.apiUrl}/auth/login`, data);
   }
 }

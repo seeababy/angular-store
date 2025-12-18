@@ -18,6 +18,9 @@ export class HomePage {
   
   products: Product[] = [
     { id: 1, title: 'iPhone 17 pro max 256GB', price: 66999, image: '/assets/images/product-card/iphone17promax256gb.webp' },
+    { id: 2, title: 'iPhone 16 pro max 256GB', price: 54999, image: '/assets/images/product-card/iphone17promax256gb.webp' },
+    { id: 3, title: 'iPhone 15 pro max 256GB', price: 40999, image: '/assets/images/product-card/iphone17promax256gb.webp' },
+    { id: 4, title: 'iPhone 14 pro max 256GB', price: 32999, image: '/assets/images/product-card/iphone17promax256gb.webp' }
   ];
 
   addToCart(productId: number) {

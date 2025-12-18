@@ -39,9 +39,12 @@ export class Registration {
 
     this.auth.registration(this.formGroup.value as RegistrationData).pipe(
       catchError(() => of(null)),
-    ).subscribe(() => {
+    ).subscribe(res => {
+      if (res !== null) {
+          localStorage.setItem('token', res.token);
+          this.router.navigate(['/', AppRoutesConfig.Home]);
+      };
       this.formGroup.reset();
-      this.router.navigate(['/', AppRoutesConfig.Home]);
     });
   }
 }
