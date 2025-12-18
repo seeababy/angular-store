@@ -37,9 +37,12 @@ export class Login {
 
     this.auth.login(this.formGroup.value as LoginData).pipe(
       catchError(() => of(null)),
-    ).subscribe(() => {
-          this.formGroup.reset();
+    ).subscribe(res => {
+      if (res !== null) {
+          localStorage.setItem('token', res.token);
           this.router.navigate(['/', AppRoutesConfig.Home]);
+      };
+          this.formGroup.reset();
     });
   }
 }

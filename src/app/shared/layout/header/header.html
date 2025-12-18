@@ -1,14 +1,15 @@
 <header class="header">
     <div class="container header__content">
-                <button class="header__menu-btn">
-                    <span class="header__menu-btn-line"></span>
-                    <span class="header__menu-btn-line"></span>
-                    <span class="header__menu-btn-line"></span>
-                </button>
-                        
-                <div class="header__logo">
-                    <img src="/assets/logo/logo.svg" alt="logo">
-                </div>
+
+        <button class="header__menu-btn">
+            <span class="header__menu-btn-line"></span>
+            <span class="header__menu-btn-line"></span>
+            <span class="header__menu-btn-line"></span>
+        </button>
+
+        <div class="header__logo">
+            <img src="/assets/logo/logo.svg" alt="logo">
+        </div>
 
         <div class="header__search">
             <input type="text" class="header__search-input" placeholder="Знайти товар...">
@@ -16,12 +17,22 @@
         </div>
 
         <div class="header__icons">
+
             <button class="header__btn cart">
                 <mat-icon class="icon" svgIcon="cart"></mat-icon>
+
+                @if (basketCount() > 0) {
+                    <span class="cart-badge">
+                        {{ basketCount()}}
+                    </span>
+                }
             </button>
+
             <button class="header__btn user" [routerLink]="AppRoutesConfig.Account">
                 <mat-icon class="icon" svgIcon="user"></mat-icon>
             </button>
+
         </div>
+
     </div>
 </header>

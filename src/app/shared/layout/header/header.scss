@@ -123,7 +123,27 @@
     &:active {
       transform: scale(0.95);
     }
+
+    &.cart {
+      position: relative;
+    }
   }
+}
+
+.cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  background: red;
+  color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (max-width: 360px) {
@@ -186,5 +206,13 @@
         font-size: 22px;
       }
     }
+  }
+
+  .cart-badge {
+    top: -4px;
+    right: -4px;
+    min-width: 16px;
+    height: 16px;
+    font-size: 11px;
   }
 }
