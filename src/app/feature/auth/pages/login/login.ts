@@ -8,6 +8,8 @@ import { LoginData } from '../entities/login.interface';
 import { catchError, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { AppRoutesConfig } from '../../../../app.routes-config';
+import { Store } from '@ngxs/store';
+import { SetToken } from '../../../../core/ngxs/user/user.actions';
 
 @Component({
   selector: 'app-login',
@@ -26,6 +28,7 @@ export class Login {
   auth = inject(Auth);
   cdr = inject(ChangeDetectorRef);
   router = inject(Router);
+  store = inject(Store);
 
   formGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -38,11 +41,12 @@ export class Login {
     this.auth.login(this.formGroup.value as LoginData).pipe(
       catchError(() => of(null)),
     ).subscribe(res => {
-      if (res !== null) {
-          localStorage.setItem('token', res.token);
-          this.router.navigate(['/', AppRoutesConfig.Home]);
-      };
-          this.formGroup.reset();
+      if (res) {
+        this.store.dispatch(new SetToken(res.token));
+        this.router.navigate(['/', AppRoutesConfig.Home]);
+      }
+
+      this.formGroup.reset();
     });
   }
 }

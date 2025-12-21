@@ -8,6 +8,8 @@ import { RegistrationData } from '../entities/registration.interface';
 import { catchError, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { AppRoutesConfig } from '../../../../app.routes-config';
+import { Store } from '@ngxs/store';
+import { SetToken } from '../../../../core/ngxs/user/user.actions';
 
 @Component({
   selector: 'app-registration',
@@ -27,6 +29,7 @@ export class Registration {
   auth = inject(Auth);
   cdr = inject(ChangeDetectorRef);
   router = inject(Router);
+  store = inject(Store);
 
   formGroup = new FormGroup({
     username: new FormControl('', Validators.required),
@@ -40,10 +43,11 @@ export class Registration {
     this.auth.registration(this.formGroup.value as RegistrationData).pipe(
       catchError(() => of(null)),
     ).subscribe(res => {
-      if (res !== null) {
-          localStorage.setItem('token', res.token);
-          this.router.navigate(['/', AppRoutesConfig.Home]);
-      };
+      if (res) {
+        this.store.dispatch(new SetToken(res.token));
+        this.router.navigate(['/', AppRoutesConfig.Home]);
+      }
+
       this.formGroup.reset();
     });
   }
