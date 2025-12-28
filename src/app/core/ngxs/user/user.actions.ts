@@ -3,6 +3,6 @@ export class SetToken {
   constructor(public token: string) {}
 }
 
-export class ClearToken {
-  static readonly type = '[User] Clear Token';
+export class Logout {
+  static readonly type = '[User] Logout';
 }

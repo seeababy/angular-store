@@ -3,5 +3,9 @@ export const BaseIcons = [
     'facebook',
     'instagram',
     'tiktok',
-    'user'
+    'user',
+    'settings',
+    'logout',
+    'delete',
+    'cart-checkout',
 ];

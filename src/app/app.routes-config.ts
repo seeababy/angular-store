@@ -4,4 +4,5 @@ export enum AppRoutesConfig {
   Registration = 'register',
   Login = 'login',
   Account = 'account',
+  Basket = 'basket',
 }

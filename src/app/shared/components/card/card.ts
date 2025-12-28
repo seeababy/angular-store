@@ -1,8 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { Product } from '../../entities/interfaces/product.interface';
-import { MatIcon } from "@angular/material/icon";
+import { MatIconModule } from "@angular/material/icon";
+import { RouterModule, Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { AddToBasket } from '../../../core/ngxs/basket/basket.actions';
+import { AppRoutesConfig } from '../../../app.routes-config';
+import { BasketSelectors } from '../../../core/ngxs/basket/basket.selectors';
 
 @Component({
   selector: 'app-card',
@@ -10,15 +13,28 @@ import { AddToBasket } from '../../../core/ngxs/basket/basket.actions';
   styleUrl: './card.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatIcon],
+  imports: [MatIconModule, RouterModule],
 })
 export class Card {
-  store = inject(Store);
 
-  product = input.required<Product>(); 
+  private store = inject(Store);
+  private router = inject(Router);
+
+  product = input.required<Product>();
+  AppRoutesConfig = AppRoutesConfig;
+
+  isInBasket = this.store.selectSignal(state =>
+    BasketSelectors.isInBasket(state.basket)(this.product().id)
+  );
 
   onAdd() {
     const id = this.product()?.id;
-    this.store.dispatch(new AddToBasket(id));
+    if (id) {
+      this.store.dispatch(new AddToBasket(id));
+    }
+  }
+
+  goToBasket() {
+    this.router.navigate([AppRoutesConfig['Basket']]);
   }
 }
