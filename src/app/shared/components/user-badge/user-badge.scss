@@ -1,0 +1,72 @@
+:host {
+  display: block;
+}
+
+.user-btn {
+  width: 34px;
+  height: 34px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  transition: 0.2s ease;
+
+  .icon {
+    width: 26px;
+    height: 26px;
+    color: yellow;
+  }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.08);
+    transform: scale(1.06);
+  }
+
+  &:active {
+    transform: scale(0.94);
+  }
+}
+
+.user-menu {
+  .mat-mdc-menu-content {
+    background: yellow;
+    padding: 0;
+  }
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 10px 14px;
+  background: transparent;
+  border: none;
+  width: 100%;
+  transition: 0.2s ease;
+  border-radius: 8px;
+  color: black;
+
+  mat-icon {
+    width: 22px;
+    height: 22px;
+    color: black;
+  }
+
+  &:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+.menu-divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.18);
+  margin: 6px 0;
+  border-radius: 1px;
+}

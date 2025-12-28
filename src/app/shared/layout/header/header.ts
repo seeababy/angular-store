@@ -4,6 +4,7 @@ import { RouterLink } from "@angular/router";
 import { AppRoutesConfig } from '../../../app.routes-config';
 import { Store } from '@ngxs/store';
 import { BasketSelectors } from '../../../core/ngxs/basket/basket.selectors';
+import { UserBadge } from "../../components/user-badge/user-badge";
 
 @Component({
   selector: 'app-header',
@@ -11,7 +12,7 @@ import { BasketSelectors } from '../../../core/ngxs/basket/basket.selectors';
   styleUrl: './header.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatIcon, RouterLink],
+  imports: [MatIcon, RouterLink, UserBadge],
 })
 export class Header implements OnInit{
   private store = inject(Store);

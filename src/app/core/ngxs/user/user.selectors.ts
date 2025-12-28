@@ -1,6 +1,6 @@
 import { Selector } from '@ngxs/store';
 import { UserState } from './user.state';
-import { UserStateModel } from './user.model';
+import { UserStateModel } from './user.state';
 
 export class UserSelectors {
 
