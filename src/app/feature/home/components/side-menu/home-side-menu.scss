@@ -1,0 +1,58 @@
+:host {
+  position: sticky;
+  bottom: 0;
+  align-self: flex-end;
+}
+
+.side-menu {
+  background: yellow;
+  max-width: 320px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: 100%;
+}
+
+.side-menu__section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.link {
+  color: black;
+  font-size: 16px;
+  padding: 6px 0;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:active {
+    text-decoration: underline;
+    font-weight: 700;
+  }
+}
+
+.divider {
+  height: 2px;
+  background: black;
+  margin: 8px 0;
+}
+
+@media (max-width: 1023px) {
+  :host {
+    display: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  :host {
+    display: block;
+  }
+}
+
+

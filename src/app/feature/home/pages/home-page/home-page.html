@@ -1,6 +1,13 @@
-<app-slider [items]="sliderImages"></app-slider>
-<div class="products">
-    @for (p of products; track p.id) {
-    <app-card [product]="p"/>
-    }
+<div class="page-layout">
+    <app-home-side-menu></app-home-side-menu>
+
+    <div class="page-content">
+        <app-slider [items]="sliderImages"></app-slider>
+
+        <div class="products">
+            @for (product of products(); track product.id) {
+            <app-card class="card-item" [product]="product" />
+            }
+        </div>
+    </div>
 </div>

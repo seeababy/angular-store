@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Action, State, StateContext } from '@ngxs/store';
+import { inject, Injectable } from '@angular/core';
+import { Action, NgxsOnInit, State, StateContext } from '@ngxs/store';
 import { ProductsStateModel } from './products.model';
-import { SetProducts } from './products.actions';
+import { GetProducts, SetProducts } from './products.actions';
+import { HttpClient } from '@angular/common/http';
+import { map, tap } from 'rxjs/operators';
 
 
 @State<ProductsStateModel>({
@@ -11,7 +13,19 @@ import { SetProducts } from './products.actions';
   }
 })
 @Injectable()
-export class ProductsState {
+export class ProductsState implements NgxsOnInit{
+
+  private http = inject(HttpClient);
+  apiUrl = 'http://localhost:5000';
+
+  ngxsOnInit(ctx: StateContext<ProductsStateModel>) {
+    ctx.dispatch(new GetProducts());
+  }
+
+  @Action(GetProducts)
+  getProducts(ctx: StateContext<ProductsStateModel>) {
+    return this.http.get<any[]>(`${this.apiUrl}/products`).pipe(map((products: any[]) => ctx.dispatch(new SetProducts(products[0]))));
+  }
 
   @Action(SetProducts)
   setProducts(

@@ -8,4 +8,10 @@ export const BaseIcons = [
     'logout',
     'delete',
     'cart-checkout',
+    'search',
+    'laptops-computers',
+    'smartphones',
+    'tv-electronics',
+    'gaming',
+    'home',
 ];

@@ -4,3 +4,7 @@ export class SetProducts {
   static readonly type = '[Products] Set Products';
   constructor(public products: Product[]) {}
 }
+
+export class GetProducts {
+  static readonly type = '[Products] Get Products';
+}

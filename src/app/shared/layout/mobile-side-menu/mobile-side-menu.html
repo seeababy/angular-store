@@ -1,0 +1,63 @@
+<div class="side-menu">
+
+    <div class="side-menu__header">
+        <button class="close-btn" (click)="emitMenuClosed.emit()">✕</button>
+    </div>
+
+    <div class="side-menu__body">
+
+        <div class="side-menu__section">
+            <a class="menu-item" [routerLink]="AppRoutesConfig.Home" (click)="emitMenuClosed.emit()">
+                <mat-icon class="icon" svgIcon="home"></mat-icon>
+                <span>Головна</span>
+            </a>
+
+            <a class="menu-item" [routerLink]="AppRoutesConfig.Basket" (click)="emitMenuClosed.emit()">
+                <mat-icon class="icon" svgIcon="cart"></mat-icon>
+                <span>Кошик ({{ basketCount() }})</span>
+            </a>
+
+            <a class="menu-item" [routerLink]="AppRoutesConfig.Account" (click)="emitMenuClosed.emit()">
+                <mat-icon class="icon" svgIcon="user"></mat-icon>
+                <span>Особистий кабінет</span>
+            </a>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="side-menu__section">
+            @for (item of categoryItems; track item.name) {
+            <app-category-item [item]="item"></app-category-item>
+            }
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="side-menu__section">
+            <a class="link" routerLink="#">Про нас</a>
+            <a class="link" routerLink="#">Контакти</a>
+            <a class="link" routerLink="#">Оплата і доставка</a>
+            <a class="link" routerLink="#">Повернення</a>
+            <a class="link" routerLink="#">Гарантія</a>
+            <a class="link" routerLink="#">Акції</a>
+            <a class="link" routerLink="#">FAQ</a>
+            <a class="link" routerLink="#">Блог</a>
+            <a class="link" routerLink="#">Співпраця</a>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="side-menu__social">
+            <h3 class="social-title">Ми в соцмережах</h3>
+            <div class="social-icons">
+                <div class="social-item"><mat-icon class="icon" svgIcon="facebook"></mat-icon></div>
+                <div class="social-item"><mat-icon class="icon" svgIcon="instagram"></mat-icon></div>
+                <div class="social-item"><mat-icon class="icon" svgIcon="tiktok"></mat-icon></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+

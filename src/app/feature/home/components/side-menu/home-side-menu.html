@@ -1,0 +1,27 @@
+<div class="side-menu">
+
+    <div class="side-menu__section">
+        @for (item of categoryItems; track item.name) {
+        <app-category-item [item]="item"></app-category-item>
+        }
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="side-menu__section">
+        <a class="link" routerLink="#">Про нас</a>
+        <a class="link" routerLink="#">Контакти</a>
+        <a class="link" routerLink="#">Оплата і доставка</a>
+        <a class="link" routerLink="#">Повернення</a>
+        <a class="link" routerLink="#">Гарантія</a>
+        <a class="link" routerLink="#">Акції</a>
+        <a class="link" routerLink="#">FAQ</a>
+        <a class="link" routerLink="#">Блог</a>
+        <a class="link" routerLink="#">Співпраця</a>
+    </div>
+
+    <div class="divider"></div>
+
+    <app-social-networks></app-social-networks>
+
+</div>
