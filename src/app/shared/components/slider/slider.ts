@@ -40,3 +40,5 @@ export class Slider implements AfterViewInit {
     }).mount();
   }
 }
+
+

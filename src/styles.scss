@@ -12,10 +12,18 @@ html,
 body {
     margin: 0;
     padding: 0;
+    overflow: auto;
 }
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { 
+    margin: 0; 
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 mat-icon.mat-icon {
     display: flex;
+}
+
+.no-scroll {
+    overflow: hidden;
 }

@@ -1,7 +1,7 @@
 <header class="header">
     <div class="container header__content">
 
-        <button class="header__menu-btn">
+        <button class="header__menu-btn mobile-only" (click)="emitBurgerClick.emit()">
             <span class="header__menu-btn-line"></span>
             <span class="header__menu-btn-line"></span>
             <span class="header__menu-btn-line"></span>
@@ -11,26 +11,32 @@
             <img src="/assets/logo/logo.svg" alt="logo">
         </a>
 
-        <div class="header__search">
-            <input type="text" class="header__search-input" placeholder="Знайти товар...">
-            <button class="header__search-btn">Знайти</button>
+        <div class="header__search" [class.floating]="isFloating" appClickOutside (clickOutside)="submitSearch()">
+            <input type="text" class="header__search-input" placeholder="Знайти товар..." (click)="openSearch()">
+
+            <button class="header__search-btn" (click)="submitSearch()">
+                <span class="search-text">Знайти</span>
+                <mat-icon class="icon" svgIcon="search"></mat-icon>
+            </button>
+
+            @if (isFloating) {
+            <div class="search-dropdown">
+                <div class="search-dropdown__title">Історія пошуку</div>
+            </div>
+            }
         </div>
 
         <div class="header__icons">
-
             <button class="header__btn cart" [routerLink]="AppRoutesConfig.Basket">
                 <mat-icon class="icon" svgIcon="cart"></mat-icon>
-
                 @if (basketCount() > 0) {
-                    <span class="cart-badge">
-                        {{ basketCount()}}
-                    </span>
+                <span class="cart-badge">{{ basketCount() }}</span>
                 }
             </button>
 
             <app-user-badge></app-user-badge>
-
         </div>
 
     </div>
 </header>
+

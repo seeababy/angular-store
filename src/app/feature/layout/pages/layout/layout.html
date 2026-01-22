@@ -1,5 +1,5 @@
-<app-header></app-header>
-
+<app-header (emitBurgerClick)="toggleSideMenu(true)"></app-header>
+<app-mobile-side-menu [class.opened]="isSideMenuOpened" (emitMenuClosed)="toggleSideMenu(false)"></app-mobile-side-menu>
 <div class="content">
     <router-outlet></router-outlet>
 </div>

@@ -1,0 +1,145 @@
+:host {
+  display: none;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  transform: translateX(-100%);
+  transition: 0.2s all;
+  z-index: 2000;
+}
+
+:host.opened {
+  transform: translateX(0);
+}
+
+@media (max-width: 1023px) {
+  :host {
+    display: block;
+  }
+
+  .side-menu {
+    display: flex;
+    inset: 0;
+    flex-direction: column;
+    background: yellow;
+    height: 100%;
+  }
+
+  .side-menu__header {
+    background: black;
+    height: 60px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 16px;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    color: yellow;
+    font-size: 28px;
+    cursor: pointer;
+  }
+
+  .side-menu__body {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    overflow-y: auto;
+  }
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    color: black;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+
+    .icon {
+      color: black;
+      width: 26px;
+      height: 26px;
+    }
+
+    &:hover {
+      transform: scale(1.08);
+    }
+
+    &:active {
+      transform: scale(0.96);
+    }
+  }
+
+  .side-menu__section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .link {
+    color: black;
+    font-size: 16px;
+    padding: 6px 0;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .link:hover {
+    text-decoration: underline;
+  }
+
+  .link:active {
+    text-decoration: underline;
+    font-weight: 700;
+  }
+
+  .link.main {
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .side-menu__social {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .social-title {
+    font-weight: 600;
+    color: black;
+  }
+
+  .social-icons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .social-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .icon {
+      color: blue;
+      width: 26px;
+      height: 26px;
+    }
+  }
+
+  :host.opened .divider {
+    height: 2px;
+    background: black;
+    margin: 10px 0;
+    flex-shrink: 0;
+  }
+}
+
