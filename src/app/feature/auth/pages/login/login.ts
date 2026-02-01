@@ -31,7 +31,7 @@ export class Login {
   store = inject(Store);
 
   formGroup = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
+    identifier: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
   });
 
@@ -42,7 +42,7 @@ export class Login {
       catchError(() => of(null)),
     ).subscribe(res => {
       if (res) {
-        this.store.dispatch(new SetToken(res.token));
+        this.store.dispatch(new SetToken(res.data));
         this.router.navigate(['/', AppRoutesConfig.Home]);
       }
 

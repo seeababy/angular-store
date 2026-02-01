@@ -3,23 +3,25 @@ import { Injectable } from '@angular/core';
 import { inject } from '@angular/core';
 import { LoginData } from '../pages/entities/login.interface';
 import { RegistrationData } from '../pages/entities/registration.interface';
+import { ApiResponse } from '../../../core/entities/interfaces/api-response.interface';
+import { AuthResponse } from '../pages/entities/interfaces/auth-response.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Auth {
   http = inject(HttpClient);
-  apiUrl = 'http://localhost:5000';
+  apiUrl = 'http://localhost:3000/api';
 
   constructor( 
   ) { 
   }
 
   registration(data: RegistrationData) {
-    return this.http.post<{token: string}>(`${this.apiUrl}/auth/registration`, data);
+    return this.http.post<ApiResponse<AuthResponse>>(`${this.apiUrl}/auth/registration`, data);
   }
 
   login(data: LoginData) {
-    return this.http.post<{token: string}>(`${this.apiUrl}/auth/login`, data);
+    return this.http.post<ApiResponse<AuthResponse>>(`${this.apiUrl}/auth/login`, data);
   }
 }

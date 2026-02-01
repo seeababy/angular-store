@@ -1,25 +1,26 @@
 @if (!isAuthorized()) {
-    <button class="user-btn" [routerLink]="['/', AppRoutesConfig.Auth, AppRoutesConfig.Login]">
-        <mat-icon class="icon" svgIcon="user"></mat-icon>
-    </button>
+<button class="user-btn" [routerLink]="['/', AppRoutesConfig.Auth, AppRoutesConfig.Login]">
+    <mat-icon class="icon" svgIcon="user"></mat-icon>
+</button>
 } @else {
-    <button class="user-btn" [matMenuTriggerFor]="userMenu">
-        <mat-icon class="icon" svgIcon="user"></mat-icon>
+
+<button class="user-btn avatar-btn" [matMenuTriggerFor]="userMenu" [style.background]="color()">
+    {{ shortName() }}
+</button>
+
+<mat-menu #userMenu="matMenu" class="user-menu">
+
+    <button mat-menu-item class="menu-item" [routerLink]="['/', AppRoutesConfig.Account]">
+        <mat-icon svgIcon="settings"></mat-icon>
+        <span>Settings</span>
     </button>
 
-    <mat-menu #userMenu="matMenu" class="user-menu">
+    <div class="menu-divider"></div>
 
-        <button mat-menu-item class="menu-item" [routerLink]="['/', AppRoutesConfig.Account]">
-            <mat-icon svgIcon="settings"></mat-icon>
-            <span>Settings</span>
-        </button>
+    <button mat-menu-item class="menu-item" (click)="logout()">
+        <mat-icon svgIcon="logout"></mat-icon>
+        <span>Logout</span>
+    </button>
 
-        <div class="menu-divider"></div>
-
-        <button mat-menu-item class="menu-item" (click)="logout()">
-            <mat-icon svgIcon="logout"></mat-icon>
-            <span>Logout</span>
-        </button>
-
-    </mat-menu>
+</mat-menu>
 }

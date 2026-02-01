@@ -11,6 +11,9 @@
   padding: 4px;
   border-radius: 8px;
   transition: 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   .icon {
     width: 26px;
@@ -26,6 +29,13 @@
   &:active {
     transform: scale(0.94);
   }
+}
+
+.avatar-btn {
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
 }
 
 .user-menu {
