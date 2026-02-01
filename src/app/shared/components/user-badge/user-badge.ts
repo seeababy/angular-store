@@ -18,12 +18,16 @@ import { Logout } from '../../../core/ngxs/user/user.actions';
 export class UserBadge {
   private store = inject(Store);
   private router = inject(Router);
+
   AppRoutesConfig = AppRoutesConfig;
 
   isAuthorized = this.store.selectSignal(UserSelectors.isAuthorized);
+  shortName = this.store.selectSignal(UserSelectors.userShortName);
+  color = this.store.selectSignal(UserSelectors.userColor);
 
   logout() {
     this.store.dispatch(new Logout());
     this.router.navigate(['/', AppRoutesConfig.Home]);
   }
 }
+

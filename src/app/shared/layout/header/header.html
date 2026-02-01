@@ -11,19 +11,31 @@
             <img src="/assets/logo/logo.svg" alt="logo">
         </a>
 
-        <div class="header__search" [class.floating]="isFloating" appClickOutside (clickOutside)="submitSearch()">
-            <input type="text" class="header__search-input" placeholder="Знайти товар..." (click)="openSearch()">
+        <div class="header__search" [class.floating]="isFloating" appClickOutside (clickOutside)="submitSearch(searchInput.value)"> 
 
-            <button class="header__search-btn" (click)="submitSearch()">
+            <input #searchInput 
+            type="text"
+            class="header__search-input"
+            placeholder="Знайти товар..."
+            (click)="openSearch()">
+
+            <button class="header__search-btn" (click)="submitSearch(searchInput.value)"> 
                 <span class="search-text">Знайти</span>
                 <mat-icon class="icon" svgIcon="search"></mat-icon>
             </button>
 
-            @if (isFloating) {
+            @if (isFloating && isAuthorized()) {
             <div class="search-dropdown">
                 <div class="search-dropdown__title">Історія пошуку</div>
+
+                @for (item of searchHistory; track item) { 
+                <div class="search-dropdown__item">
+                    {{ item }}
+                </div>
+                }
             </div>
             }
+
         </div>
 
         <div class="header__icons">
@@ -39,4 +51,3 @@
 
     </div>
 </header>
-

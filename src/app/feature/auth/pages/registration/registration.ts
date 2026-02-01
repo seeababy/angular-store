@@ -32,9 +32,11 @@ export class Registration {
   store = inject(Store);
 
   formGroup = new FormGroup({
-    username: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
+    phoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^\+380\d{9}$/)]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    firstName: new FormControl('', Validators.required),
+    lastName: new FormControl('', Validators.required),
   });
 
   submit() {
@@ -44,7 +46,7 @@ export class Registration {
       catchError(() => of(null)),
     ).subscribe(res => {
       if (res) {
-        this.store.dispatch(new SetToken(res.token));
+        this.store.dispatch(new SetToken(res.data));
         this.router.navigate(['/', AppRoutesConfig.Home]);
       }
 
@@ -52,3 +54,4 @@ export class Registration {
     });
   }
 }
+
