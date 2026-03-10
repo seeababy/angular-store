@@ -1,0 +1,11 @@
+@if (product(); as product) {
+<div class="category-switcher">
+    <a href="#" class="category-link">
+        <mat-icon class="icon" svgIcon="home"></mat-icon>
+    </a>
+    @for (category of product.categories; track $index) {
+    <span class="separator">/</span>
+    <a href="#" class="category-link">{{ category }}</a>
+    }
+</div>
+}

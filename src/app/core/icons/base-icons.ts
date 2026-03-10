@@ -14,4 +14,6 @@ export const BaseIcons = [
     'tv-electronics',
     'gaming',
     'home',
+    'guarantee',
+    'star',
 ];

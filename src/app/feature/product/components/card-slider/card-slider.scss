@@ -1,0 +1,77 @@
+:host {
+  display: block;
+  padding: 20px;
+}
+
+.slider__title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 20px;
+}
+
+.splide {
+  width: 100%;
+
+  .splide__track {
+    overflow: hidden;
+  }
+
+  .splide__list {
+    display: flex;
+  }
+
+  .splide__slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    app-card {
+      transform: scale(0.9);
+      transition: transform 0.2s;
+
+      &:hover {
+        transform: scale(1); 
+      }
+    }
+  }
+
+  .splide__arrow {
+    background: #f3f4f6;
+    border-radius: 50%;
+    color: #111827;
+    width: 36px;
+    height: 36px;
+
+    &:hover {
+      background: #e5e7eb;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .splide__slide app-card {
+    transform: scale(0.85);
+  }
+}
+
+@media (max-width: 768px) {
+  :host {
+    padding: 12px;
+  }
+
+  .slider__title {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .splide__slide app-card {
+    transform: scale(0.9);
+  }
+}
+
+@media (max-width: 480px) {
+  .splide__slide app-card {
+    transform: scale(0.95);
+  }
+}

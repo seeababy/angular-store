@@ -1,0 +1,17 @@
+@if (viewedProducts.length) {
+  <div class="slider">
+  <h2 class="slider__title">Переглянуті товари</h2>
+
+  <div id="viewed-slider" class="splide">
+    <div class="splide__track">
+      <ul class="splide__list">
+        @for (item of viewedProducts; track item.id) {
+        <li class="splide__slide">
+          <app-card [product]="item"></app-card>
+        </li>
+        }
+      </ul>
+    </div>
+  </div>
+</div>
+}

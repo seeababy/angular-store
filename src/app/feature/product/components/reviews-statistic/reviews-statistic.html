@@ -1,0 +1,31 @@
+<div class="statistic">
+
+  @if (getTotal() > 0) {
+
+    @for (rating of ratings; track rating) {
+
+      <div class="stat-row">
+
+        <div class="stat-row__left">
+          <span>{{ rating }}</span>
+          <mat-icon svgIcon="star" class="star"></mat-icon>
+        </div>
+
+        <div class="stat-row__bar">
+          <div
+            class="stat-row__fill"
+            [style.width.%]="getPercentage(rating)">
+          </div>
+        </div>
+
+        <div class="stat-row__count">
+          {{ getCount(rating) }}
+        </div>
+
+      </div>
+
+    }
+
+  }
+
+</div>

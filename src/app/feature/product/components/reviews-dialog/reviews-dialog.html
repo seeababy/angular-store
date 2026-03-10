@@ -1,0 +1,21 @@
+<h2 class="dialog-title">Залишити відгук</h2>
+
+<div class="stars">
+  @for (star of stars; track $index) {
+  <mat-icon
+    svgIcon="star"
+    class="star"
+    [class.star--active]="$index < (reviewForm.value.rating ?? 0)"
+    (click)="handleStarClick($index)"
+  ></mat-icon>
+  }
+</div>
+<form [formGroup]="reviewForm" (ngSubmit)="submit()" class="form">
+  <textarea
+    formControlName="comment"
+    placeholder="Ваш коментар..."
+    class="form__textarea"
+  ></textarea>
+
+  <button type="submit" class="submit-btn" [disabled]="reviewForm.invalid">Відправити</button>
+</form>

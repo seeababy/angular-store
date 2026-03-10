@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, output, signal } from '@angular/core';
 import { MatIcon } from "@angular/material/icon";
 import { RouterLink } from "@angular/router";
 import { CategoryItem } from "../../components/category-item/category-item";
@@ -16,7 +16,8 @@ import { BasketSelectors } from '../../../core/ngxs/basket/basket.selectors';
 })
 export class MobileSideMenu {
   store = inject(Store);
-  basketCount = this.store.selectSignal(BasketSelectors.totalCount);
+  // basketCount = this.store.selectSignal(BasketSelectors.totalCount);
+  basketCount = signal(0);
   AppRoutesConfig = AppRoutesConfig;
 
   categoryItems = [

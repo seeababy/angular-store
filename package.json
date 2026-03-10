@@ -24,6 +24,7 @@
     "@ngxs/storage-plugin": "18.1.6",
     "@ngxs/store": "^18.1.6",
     "@splidejs/splide": "^4.1.4",
+    "prettier": "^3.8.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"

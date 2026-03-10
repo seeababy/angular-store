@@ -1,0 +1,25 @@
+<section id="main-slider" class="splide main-splide" aria-label="Product Gallery Main">
+    <div class="splide__track">
+        <ul class="splide__list">
+            @for (image of images(); track $index) {
+            <li class="splide__slide">
+                <div class="image-wrapper">
+                    <img [src]="cdnUrl + image" [alt]="'Product image ' + $index" />
+                </div>
+            </li>
+            }
+        </ul>
+    </div>
+</section>
+
+<section id="thumb-slider" class="splide thumb-splide" aria-label="Product Gallery Thumbnails">
+    <div class="splide__track">
+        <ul class="splide__list">
+            @for (image of images(); track $index) {
+            <li class="splide__slide">
+                <img [src]="cdnUrl + image" [alt]="'Thumbnail ' + $index" />
+            </li>
+            }
+        </ul>
+    </div>
+</section>
