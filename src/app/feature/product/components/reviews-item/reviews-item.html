@@ -1,0 +1,17 @@
+<div class="review">
+  <div class="review__header">
+    <span class="review__user">{{ review().userName }}</span>
+    <div class="review__stars">
+      @for (star of stars; track $index) {
+      <mat-icon
+        svgIcon="star"
+        class="star"
+        [class.star--active]="$index < review().rating"
+      ></mat-icon>
+      }
+    </div>
+  </div>
+
+  <p class="review__comment">{{ review().comment }}</p>
+  <span class="review__date">{{ review().createdAt | date:'dd.MM.yyyy' }}</span>
+</div>

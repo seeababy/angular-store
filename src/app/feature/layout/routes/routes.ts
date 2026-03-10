@@ -20,12 +20,12 @@ export const routes: Routes = [
           import('../../home/pages/home-page/home-page')
             .then(m => m.HomePage),
       },
-      {
-        path: AppRoutesConfig.Basket,
-        loadComponent: () =>
-          import('../../basket/pages/basket-page/basket-page')
-            .then(m => m.BasketPage),
-      },
+      // {
+      //   path: AppRoutesConfig.Basket,
+      //   loadComponent: () =>
+      //     import('../../basket/pages/basket-page/basket-page')
+      //       .then(m => m.BasketPage),
+      // },
       {
         path: AppRoutesConfig.Account,
         canActivate: [authoriziedGuard],
@@ -33,6 +33,13 @@ export const routes: Routes = [
           import('../../account/pages/user-page/user-page')
             .then(c => c.UserPage),
       },
+
+      {
+        path: AppRoutesConfig.ProductPage,
+        loadChildren: () =>
+          import('../../product/routes/routes')
+            .then(m => m.routes),
+      }
     ],
   },
 ];

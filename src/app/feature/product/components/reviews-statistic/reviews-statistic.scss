@@ -1,0 +1,53 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.statistic {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.stat-row {
+  display: flex;              
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.stat-row__left {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 40px;         
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.star {
+  font-size: 16px;
+  color: #facc15;
+}
+
+.stat-row__bar {
+  flex: 1;                    
+  height: 8px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.stat-row__fill {
+  height: 100%;             
+  background: #facc15;
+  transition: width 0.3s ease;
+}
+
+.stat-row__count {
+  min-width: 24px;         
+  text-align: right;
+  font-size: 13px;
+  color: #374151;
+}

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, output } from '@angular/core'; // NEW effect
+import { ChangeDetectionStrategy, Component, effect, inject, output, signal } from '@angular/core'; // NEW effect
 import { MatIcon } from "@angular/material/icon";
 import { RouterLink } from "@angular/router";
 import { AppRoutesConfig } from '../../../app.routes-config';
@@ -20,7 +20,8 @@ export class Header {
 
   store = inject(Store);
 
-  basketCount = this.store.selectSignal(BasketSelectors.totalCount);
+  basketCount = signal(0);
+  // basketCount = this.store.selectSignal(BasketSelectors.totalCount);
   AppRoutesConfig = AppRoutesConfig;
   emitBurgerClick = output<void>();
   isFloating = false;
@@ -49,7 +50,7 @@ export class Header {
 
   openSearch(): void {
     this.isFloating = true;
-    document.body.classList.add('no-scroll');
+    // document.body.classList.add('no-scroll');
   }
 
   submitSearch(query?: string): void {
@@ -59,7 +60,7 @@ export class Header {
     }
 
     this.isFloating = false;
-    document.body.classList.remove('no-scroll');
+    // document.body.classList.remove('no-scroll');
   }
 
   addToSearchHistory(query: string): void {
@@ -77,12 +78,6 @@ export class Header {
     }
 
     localStorage.setItem(`searchHistory:${id}`,JSON.stringify(this.searchHistory));
-  }
-
-  ngOnInit(): void {
-    this.store.select(BasketSelectors.totalCount).subscribe(count => {
-      console.log('Basket total count:', count);
-    })
   }
 }
 

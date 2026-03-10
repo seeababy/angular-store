@@ -18,7 +18,7 @@ export class Auth {
   }
 
   registration(data: RegistrationData) {
-    return this.http.post<ApiResponse<AuthResponse>>(`${this.apiUrl}/auth/registration`, data);
+    return this.http.post<ApiResponse<AuthResponse>>(`${this.apiUrl}/auth/register`, data);
   }
 
   login(data: LoginData) {

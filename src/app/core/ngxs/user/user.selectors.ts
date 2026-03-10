@@ -22,4 +22,9 @@ export class UserSelectors {
   static userId(state: UserStateModel): string | null {
     return state.user?.id ?? null;
   }
+
+  @Selector([UserState])
+  static userToken(state: UserStateModel): string | null {
+    return state.accessToken ?? null;
+  }
 }

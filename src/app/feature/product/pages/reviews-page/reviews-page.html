@@ -1,0 +1,18 @@
+<div class="reviews">
+  <h2 class="reviews__title">Відгуки</h2>
+
+  <div class="reviews__layout">
+    <div class="reviews__left">
+      <app-reviews-statistic [reviews]="reviews()"></app-reviews-statistic>
+      <button class="write-review-btn" (click)="openDialog()">Написати відгук</button>
+    </div>
+
+    <div class="reviews__right">
+      <div class="reviews__list">
+        @for (review of getSortedReviews(); track $index) {
+        <app-reviews-item [review]="review"></app-reviews-item>
+        }
+      </div>
+    </div>
+  </div>
+</div>

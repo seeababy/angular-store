@@ -1,6 +1,8 @@
-<div class="card">
+<div class="card" (click)="goToProductPage()">
     <div class="image-wrapper">
-        <img [src]="product()?.image" alt="product" class="card__image" />
+        @if (product()?.images?.length) {
+            <img [src]="cdnUrl + product().images[0]" alt="product" class="card__image" />
+        }
     </div>
 
     <a class="card__title">{{ product()?.name }}</a>
@@ -9,11 +11,11 @@
         <span class="card__price">{{ product()?.price }} ₴</span>
 
         @if (!isInBasket()) {
-        <button class="card__cart" (click)="onAdd()">
+        <button class="card__cart" (click)="$event.stopPropagation(); onAdd()">
             <mat-icon class="icon" svgIcon="cart"></mat-icon>
         </button>
         } @else {
-        <button class="card__cart" (click)="goToBasket()">
+        <button class="card__cart" (click)="$event.stopPropagation(); goToBasket()">
             <mat-icon class="icon" svgIcon="cart-checkout"></mat-icon>
         </button>
         }

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, input, OnDestroy } from '@angular/core';
 import Splide from '@splidejs/splide';
 
 @Component({
@@ -9,11 +9,13 @@ import Splide from '@splidejs/splide';
   standalone: true,
   imports: [],
 })
-export class Slider implements AfterViewInit {
+export class Slider implements AfterViewInit, OnDestroy {
   items = input<string[]>();
 
+  private slider!: Splide;
+
   ngAfterViewInit(): void {
-    new Splide( '.splide', {
+    this.slider =new Splide( '#custom-slider', {
       type: 'loop',
       perPage: 3,
       perMove: 1,
@@ -38,6 +40,12 @@ export class Slider implements AfterViewInit {
         },
       },
     }).mount();
+  }
+
+  ngOnDestroy(): void {
+    if (this.slider) {
+      this.slider.destroy();
+    }
   }
 }
 

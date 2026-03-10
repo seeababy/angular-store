@@ -1,0 +1,26 @@
+@if (characteristics().length) {
+
+<div class="characteristics">
+  <div class="characteristics__layout">
+    <h2 class="characteristics__title">Характеристики</h2>
+
+    <div class="characteristics__groups">
+      @for (group of characteristics(); track group.title) {
+
+      <div class="group">
+        <h3 class="group__title">{{ group.title }}</h3>
+
+        <div class="group__details">
+          <div class="detail">
+            <span class="detail__label">{{ group.details.title }}</span>
+            <span class="detail__value">{{ group.details.value }}</span>
+          </div>
+        </div>
+      </div>
+
+      }
+    </div>
+  </div>
+</div>
+
+}

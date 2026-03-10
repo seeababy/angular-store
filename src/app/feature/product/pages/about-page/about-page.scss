@@ -1,0 +1,163 @@
+:host {
+  display: block;
+  padding: 20px;
+}
+
+.about {
+  background: #f3f4f6;
+  border-radius: 16px;
+  padding: 28px;
+}
+
+.about__layout {
+  display: flex;
+  gap: 48px;
+  align-items: start;
+}
+
+.about__slider {
+  background: white;
+  border-radius: 16px;
+  padding: 18px;
+  min-height: 420px;
+  max-width: 50%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about__info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+.about__name {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.about__description {
+  font-size: 16px;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.about__colors {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.about__colors-list {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.about__color-name {
+  font-weight: 500;
+  color: #111827;
+}
+
+.about__color {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid #e5e7eb;
+  cursor: pointer;
+  transition:
+    transform 0.15s,
+    border 0.15s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &.active {
+    border: 3px solid #facc15;
+    transform: scale(1.15);
+  }
+}
+
+.about__bottom {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.about__price {
+  font-size: 30px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.about__buy {
+  background: #facc15;
+  color: #111827;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 32px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    background: #eab308;
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.about__guarantee {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  :host {
+    padding: 12px;
+  }
+
+  .about {
+    padding: 18px;
+    border-radius: 12px;
+  }
+
+  .about__layout {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .about__slider {
+    max-width: 100%;
+    min-height: 300px;
+  }
+
+  .about__bottom {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .about__buy {
+    width: 100%;
+  }
+
+  .about__name {
+    font-size: 22px;
+  }
+
+  .about__price {
+    font-size: 24px;
+  }
+}
