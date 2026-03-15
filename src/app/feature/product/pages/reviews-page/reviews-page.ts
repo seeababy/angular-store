@@ -26,6 +26,8 @@ export class ReviewsPage implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
   private destroyRef = inject(DestroyRef);
 
+  readonly appRoutesConfig = AppRoutesConfig;
+
   isAuthorized = this.store.selectSignal(UserSelectors.isAuthorized);
   reviews = this.store.selectSignal(ProductsSelectors.currentProductReviews);
   currentProduct = this.store.selectSignal(ProductsSelectors.currentProduct);
@@ -39,7 +41,7 @@ export class ReviewsPage implements OnInit {
 
   openDialog(): void {
     if (!this.isAuthorized()) {
-      this.router.navigate([AppRoutesConfig.Login]);
+      this.router.navigate(['/', AppRoutesConfig.Auth, AppRoutesConfig.Login]);
       return;
     }
 
