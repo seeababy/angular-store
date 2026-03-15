@@ -12,6 +12,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import Splide from '@splidejs/splide';
 import { Card } from '../../../../shared/components/card/card';
 import { Product } from '../../../../shared/entities/interfaces/product.interface';
+import { UserSelectors } from '../../../../core/ngxs/user/user.selectors';
 
 @Component({
   selector: 'app-card-slider',
@@ -28,6 +29,7 @@ export class CardSlider implements OnInit {
   private slider!: Splide;
 
   viewedProducts: Product[] = [];
+  isAuthorized = this.store.selectSignal(UserSelectors.isAuthorized);
 
   ngOnInit(): void {
     this.store

@@ -11,6 +11,7 @@ import { BasketState } from './core/ngxs/basket/basket.state';
 import { UserState } from './core/ngxs/user/user.state';
 import { ProductsState } from './core/ngxs/products/products.state';
 import { authInterceptor } from './core/interceptors/auth-interceptor';
+import { handleerrorInterceptor } from './core/interceptors/handleerror-interceptor';
 
 const states = [BasketState, UserState, ProductsState];
 
@@ -24,7 +25,7 @@ export const appConfig: ApplicationConfig = {
         scrollPositionRestoration: 'top',
       }),
     ),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor, handleerrorInterceptor])),
     provideAnimationsAsync(),
 
     provideStore(

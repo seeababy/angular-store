@@ -44,7 +44,7 @@ export class Card {
   goToProductPage() {
     const id = this.product()?.id;
     if (id) {
-      this.router.navigate([AppRoutesConfig.Product, id]);
+      this.router.navigate(['/', AppRoutesConfig.Product, id]);
     }
   }
 }
