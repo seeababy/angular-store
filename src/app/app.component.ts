@@ -10,6 +10,7 @@ import { UserSelectors } from './core/ngxs/user/user.selectors';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter } from 'rxjs/operators';
 import { GetViewedProducts } from './core/ngxs/products/products.actions';
+import { GetCart } from './core/ngxs/basket/basket.actions';
 
 @Component({
   selector: 'app-root',

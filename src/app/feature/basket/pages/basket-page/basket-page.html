@@ -1,38 +1,41 @@
 <section class="basket container">
+  @if (totalCount() > 1) {
+  <div class="basket-header">
+    <button class="clear-btn" (click)="clearCart()">
+      <mat-icon svgIcon="delete"></mat-icon>
+    </button>
+  </div>
+  } @if (totalCount() === 0) {
+  <div class="basket-empty">
+    <img src="/assets/images/basket/empty-basket.jpg" alt="Empty basket" />
+    <p>Кошик порожній</p>
+  </div>
+  } @else {
 
-    @if (totalCount() === 0) {
-    <div class="basket-empty">
-        <img src="/assets/images/basket/empty-basket.jpg" alt="Empty basket" />
-        <p>Кошик порожній</p>
-    </div>
-    } @else {
+  <div class="basket-list">
+    @for (item of items(); track item.productId) {
+    <div class="basket-card">
+      <img [src]="'http://localhost:3000/uploads/products/' + item.image" alt="product" />
 
-    <div class="basket-list">
-        @for (item of items(); track item.id) {
-        <div class="basket-card">
+      <div class="basket-card__info">
+        <h3>{{ item.productName }}</h3>
+        <p>{{ item.subtotal }} ₴</p>
+      </div>
 
-            <img [src]="item.image" alt="product" />
+      <div class="basket-card__controls">
+        <button (click)="decrease(item.productId)">-</button>
+        <span class="qty">{{ item.quantity }}</span>
+        <button (click)="increase(item.productId)">+</button>
 
-            <div class="basket-card__info">
-                <h3>{{ item.name }}</h3>
-                <p>{{ item.price * item.quantity }} ₴</p>
-            </div>
+        <button class="delete-btn" (click)="removeFromCart(item.productId)">
+          <mat-icon class="icon" svgIcon="delete"></mat-icon>
+        </button>
+      </div>
 
-            <div class="basket-card__controls">
-                <button (click)="decrease(item.id)">-</button>
-                <span class="qty">{{ item.quantity }}</span>
-                <button (click)="increase(item.id)">+</button>
-
-                <button class="delete-btn" (click)="remove(item.id)">
-                    <mat-icon class="icon" svgIcon="delete"></mat-icon>
-                </button>
-            </div>
-
-                <button class="buy-btn">
-                    Купити
-                </button>
-        </div>
-        }
+      <button class="buy-btn">Купити</button>
     </div>
     }
+  </div>
+
+  }
 </section>
