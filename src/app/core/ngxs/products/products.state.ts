@@ -121,7 +121,12 @@ export class ProductsState implements NgxsOnInit {
   @Action(AddRecentlyProducts)
   AddRecentlyProducts(ctx: StateContext<ProductsStateModel>) {
     const currentProduct = ctx.getState().currentProduct as Product;
-    const viewedProducts = ctx.getState().viewedProducts.slice(0, 8);
-    ctx.patchState({ viewedProducts: [currentProduct,...viewedProducts] });
+    if (currentProduct) {
+      const viewedProducts = ctx
+        .getState()
+        .viewedProducts.slice(0, 18)
+        .filter((item) => item.id !== currentProduct.id);
+      ctx.patchState({ viewedProducts: [currentProduct, ...viewedProducts] });
+    }
   }
 }

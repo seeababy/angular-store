@@ -20,8 +20,7 @@ export class Header {
 
   store = inject(Store);
 
-  basketCount = signal(0);
-  // basketCount = this.store.selectSignal(BasketSelectors.totalCount);
+  basketCount = this.store.selectSignal(BasketSelectors.totalCount);
   AppRoutesConfig = AppRoutesConfig;
   emitBurgerClick = output<void>();
   isFloating = false;

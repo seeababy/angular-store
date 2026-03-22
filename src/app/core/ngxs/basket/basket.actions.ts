@@ -1,14 +1,20 @@
-export class AddToBasket {
-  static readonly type = '[BASKET] Add To Basket';
-  constructor(public id: number) {}
+export class GetCart {
+  static readonly type = '[BASKET] Get Cart';
 }
 
-export class UpdateQuantity { 
-  static readonly type = '[BASKET] Update Quantity';
-  constructor(public id: number, public quantity: number) {}
+export class UpdateCart {
+  static readonly type = '[BASKET] Update Cart';
+  constructor(
+    public productId: string,
+    public quantity: number,
+  ) {}
 }
 
-export class RemoveFromBasket { 
-  static readonly type = '[BASKET] Remove From Basket';
-  constructor(public id: number) {}
+export class RemoveFromCart {
+  static readonly type = '[BASKET] Remove From Cart';
+  constructor(public productId: string) {}
+}
+
+export class ClearCart {
+  static readonly type = '[BASKET] Clear Cart';
 }

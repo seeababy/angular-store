@@ -1,43 +1,60 @@
-import { State, Action, StateContext } from '@ngxs/store';
-import { Injectable } from '@angular/core';
+import { State, Action, StateContext, NgxsOnInit } from '@ngxs/store';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { tap } from 'rxjs/operators';
 import { BasketStateModel } from './basket.model';
-import { AddToBasket } from './basket.actions';
+import { GetCart, UpdateCart, RemoveFromCart, ClearCart } from './basket.actions';
+import { ApiResponse } from '../../entities/interfaces/api-response.interface';
 
 @State<BasketStateModel>({
   name: 'basket',
   defaults: {
-    basketProducts: [],
-    basketInfo:{}
-  }
+    items: [],
+    total: 0,
+    totalItems: 0,
+  },
 })
 @Injectable()
-export class BasketState {
+export class BasketState implements NgxsOnInit {
+  private http = inject(HttpClient);
+  apiUrl = 'http://localhost:3000/api';
 
-  // @Action(AddToBasket)
-  // add(ctx: StateContext<BasketStateModel>, action: AddToBasket) {
-  //   const state = ctx.getState();
-  //   const exists = state.find(item => item.id === action.id);
+  ngxsOnInit(ctx: StateContext<BasketStateModel>) {
+    ctx.dispatch(new GetCart());
+  }
 
-  //   if (!exists) {
-  //     ctx.setState([...state, { id: action.id, quantity: 1 }]);
-  //   }
-  // }
+  @Action(GetCart)
+  getCart(ctx: StateContext<BasketStateModel>) {
+    return this.http.get<ApiResponse<BasketStateModel>>(`${this.apiUrl}/orders/cart`).pipe(
+      tap((res) => {
+        if (res.success) {
+          ctx.patchState(res.data);
+        }
+      }),
+    );
+  }
 
-  // @Action(UpdateQuantity)
-  // update(ctx: StateContext<BasketStateModel>, action: UpdateQuantity) {
-  //   const state = ctx.getState();
-  //   ctx.setState(state.map(item => 
-  //     item.id === action.id ? { ...item, quantity: action.quantity } : item
-  //   ));
-  // }
+  @Action(UpdateCart)
+  updateCart(ctx: StateContext<BasketStateModel>, action: UpdateCart) {
+    return this.http
+      .post(`${this.apiUrl}/orders/cart`, {
+        productId: action.productId,
+        quantity: action.quantity,
+      })
+      .pipe(tap(() => ctx.dispatch(new GetCart())));
+  }
 
-  // @Action(RemoveFromBasket)
-  // remove(ctx: StateContext<BasketStateModel>, action: RemoveFromBasket) {
-  //   const state = ctx.getState();
-  //   ctx.setState(state.filter(item => item.id !== action.id));
-  // }
+  @Action(RemoveFromCart)
+  removeFromBasket(ctx: StateContext<BasketStateModel>, action: RemoveFromCart) {
+    return this.http
+      .delete(`${this.apiUrl}/orders/cart/${action.productId}`)
+      .pipe(tap(() => ctx.dispatch(new GetCart())));
+  }
+
+  @Action(ClearCart)
+  clearCart(ctx: StateContext<BasketStateModel>) {
+    return this.http
+      .delete(`${this.apiUrl}/orders/cart`)
+      .pipe(tap(() => ctx.dispatch(new GetCart())));
+  }
 }
-
-
-
-

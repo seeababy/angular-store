@@ -70,7 +70,7 @@
       font-size: 16px;
       font-weight: 700;
       color: #000;
-      margin-bottom: 8px; 
+      margin-bottom: 8px;
     }
   }
 
@@ -137,6 +137,30 @@
 
   &:active {
     transform: scale(0.96);
+  }
+}
+
+.basket-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.clear-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  mat-icon {
+    width: 30px;
+    height: 30px;
+    color: #000;
+    transition: 0.2s ease;
+  }
+
+  &:hover mat-icon {
+    color: red;
+    transform: scale(1.1);
   }
 }
 

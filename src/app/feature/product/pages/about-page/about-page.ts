@@ -1,24 +1,29 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  effect,
+  inject,
+} from '@angular/core';
 import { Store } from '@ngxs/store';
 import { ProductsSelectors } from '../../../../core/ngxs/products/products.selectors';
 import { GetProductById } from '../../../../core/ngxs/products/products.actions';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { AboutSlider } from "../../components/about-slider/about-slider";
-import { MatIcon } from "@angular/material/icon";
+import { AboutSlider } from '../../components/about-slider/about-slider';
+import { MatIcon } from '@angular/material/icon';
 import { Product } from '../../../../shared/entities/interfaces/product.interface';
 import { AppRoutesConfig } from '../../../../app.routes-config';
-
+import { UpdateCart } from '../../../../core/ngxs/basket/basket.actions';
 
 @Component({
   selector: 'app-about-page',
   standalone: true,
-  imports: [AboutSlider, MatIcon,],
+  imports: [AboutSlider, MatIcon],
   templateUrl: './about-page.html',
   styleUrl: './about-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AboutPage {
-
   private store = inject(Store);
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
@@ -31,20 +36,15 @@ export class AboutPage {
   relatedProducts: Product[] = [];
 
   constructor() {
-
     effect(() => {
       const current = this.product();
 
       if (!current) return;
 
-      this.relatedProducts = [
-        current,
-        ...(current.relatedProducts ?? [])
-      ];
+      this.relatedProducts = [current, ...(current.relatedProducts ?? [])];
 
       this.cdr.detectChanges();
     });
-
   }
 
   ngOnInit() {
@@ -59,5 +59,13 @@ export class AboutPage {
     this.router.navigate([AppRoutesConfig.Product, id]);
 
     this.store.dispatch(new GetProductById(id));
+  }
+
+  goToBasket() {
+    const product = this.product();
+    if (!product?.id) return;
+    this.store.dispatch(new UpdateCart(product.id, 1)).subscribe(() => {
+      this.router.navigate(['/', AppRoutesConfig.Basket]);
+    });
   }
 }

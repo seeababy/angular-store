@@ -37,4 +37,3 @@ export class GetViewedProducts {
 export class AddRecentlyProducts {
   static readonly type = '[Products] Add Recently Products';
 }
-

@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, computed } from '@angular/core';
 import { Product } from '../../entities/interfaces/product.interface';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule, Router } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { AddToBasket } from '../../../core/ngxs/basket/basket.actions';
+import { UpdateCart } from '../../../core/ngxs/basket/basket.actions';
 import { AppRoutesConfig } from '../../../app.routes-config';
 import { BasketSelectors } from '../../../core/ngxs/basket/basket.selectors';
 
@@ -19,26 +19,27 @@ export class Card {
   private store = inject(Store);
   private router = inject(Router);
 
-  product = input.required<Product>();
   readonly AppRoutesConfig = AppRoutesConfig;
-
-  // isInBasket = this.store.selectSignal(state =>
-  //   BasketSelectors.isInBasket(state.basket)(this.product().id)
-  // );
-
-  isInBasket = signal(false);
-
   readonly cdnUrl = 'http://localhost:3000/uploads/products/';
+
+  product = input.required<Product>();
+
+  items = this.store.selectSignal(BasketSelectors.items);
+
+  isInBasket(): boolean {
+    const id = this.product()?.id;
+    return this.items().some((item) => item.productId === id);
+  }
 
   onAdd() {
     const id = this.product()?.id;
     if (id) {
-      // this.store.dispatch(new AddToBasket(id));
+      this.store.dispatch(new UpdateCart(id, 1));
     }
   }
 
   goToBasket() {
-    this.router.navigate([AppRoutesConfig.Basket]);
+    this.router.navigate(['/', AppRoutesConfig.Basket]);
   }
 
   goToProductPage() {
