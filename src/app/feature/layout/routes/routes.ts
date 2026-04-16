@@ -27,11 +27,11 @@ export const routes: Routes = [
             .then(m => m.BasketPage),
       },
       {
-        path: AppRoutesConfig.Account,
+        path: AppRoutesConfig.Office,
         canActivate: [authoriziedGuard],
-        loadComponent: () =>
-          import('../../account/pages/user-page/user-page')
-            .then(c => c.UserPage),
+        loadChildren: () =>
+          import('../../office/routes/routes')
+            .then(c => c.routes),
       },
 
       {
@@ -39,6 +39,13 @@ export const routes: Routes = [
         loadChildren: () =>
           import('../../product/routes/routes')
             .then(m => m.routes),
+      },
+
+      {
+        path: AppRoutesConfig.MakeOrder,
+        loadComponent: () => 
+          import('../../make-orders/pages/make-orders/make-orders')
+            .then(c => c.MakeOrders)
       }
     ],
   },

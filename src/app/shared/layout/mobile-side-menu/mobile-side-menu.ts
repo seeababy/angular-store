@@ -16,8 +16,7 @@ import { BasketSelectors } from '../../../core/ngxs/basket/basket.selectors';
 })
 export class MobileSideMenu {
   store = inject(Store);
-  // basketCount = this.store.selectSignal(BasketSelectors.totalCount);
-  basketCount = signal(0);
+  basketCount = this.store.selectSignal(BasketSelectors.totalCount);
   AppRoutesConfig = AppRoutesConfig;
 
   categoryItems = [

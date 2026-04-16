@@ -4,6 +4,9 @@ import { CommonModule } from '@angular/common';
 import { BasketSelectors } from '../../../../core/ngxs/basket/basket.selectors';
 import { ClearCart, RemoveFromCart, UpdateCart } from '../../../../core/ngxs/basket/basket.actions';
 import { MatIconModule } from '@angular/material/icon';
+import { BasketCard } from "../../components/basket-card/basket-card";
+import { RouterLink } from "@angular/router";
+import { AppRoutesConfig } from '../../../../app.routes-config';
 
 @Component({
   selector: 'app-basket-page',
@@ -11,31 +14,16 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./basket-page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, MatIconModule, BasketCard, RouterLink],
 })
 export class BasketPage {
   private store = inject(Store);
 
   items = this.store.selectSignal(BasketSelectors.items);
   totalCount = this.store.selectSignal(BasketSelectors.totalCount);
+  total = this.store.selectSignal(BasketSelectors.total);
 
-  increase(id: string) {
-    const item = this.items().find((i) => i.productId === id);
-    if(item) {
-      this.store.dispatch(new UpdateCart(id, item.quantity + 1));
-    }
-  }
-
-  decrease(id: string) {
-    const item = this.items().find((i) => i.productId === id);
-    if(item) {
-      this.store.dispatch(new UpdateCart(id, item.quantity - 1));
-    }
-  }
-
-  removeFromCart(id: string) {
-    this.store.dispatch(new RemoveFromCart(id));
-  }
+  readonly AppRoutesConfig = AppRoutesConfig;
 
   clearCart() {
     this.store.dispatch(new ClearCart());

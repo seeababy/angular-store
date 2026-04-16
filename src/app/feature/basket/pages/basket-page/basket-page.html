@@ -1,5 +1,5 @@
 <section class="basket container">
-  @if (totalCount() > 1) {
+  @if (totalCount() > 0) {
   <div class="basket-header">
     <button class="clear-btn" (click)="clearCart()">
       <mat-icon svgIcon="delete"></mat-icon>
@@ -12,30 +12,18 @@
   </div>
   } @else {
 
-  <div class="basket-list">
-    @for (item of items(); track item.productId) {
-    <div class="basket-card">
-      <img [src]="'http://localhost:3000/uploads/products/' + item.image" alt="product" />
+  <app-basket-card />
 
-      <div class="basket-card__info">
-        <h3>{{ item.productName }}</h3>
-        <p>{{ item.subtotal }} ₴</p>
+  <div class="basket-footer">
+    <button class="continue-btn" [routerLink]="['/', AppRoutesConfig.Home]">Продовжити покупки</button>
+
+    <div class="summary">
+      <div class="total">
+        <span>{{ total() }} ₴</span>
       </div>
 
-      <div class="basket-card__controls">
-        <button (click)="decrease(item.productId)">-</button>
-        <span class="qty">{{ item.quantity }}</span>
-        <button (click)="increase(item.productId)">+</button>
-
-        <button class="delete-btn" (click)="removeFromCart(item.productId)">
-          <mat-icon class="icon" svgIcon="delete"></mat-icon>
-        </button>
-      </div>
-
-      <button class="buy-btn">Купити</button>
+      <button class="checkout-btn" [routerLink]="['/', AppRoutesConfig.MakeOrder]">Оформити замовлення</button>
     </div>
-    }
   </div>
-
   }
 </section>

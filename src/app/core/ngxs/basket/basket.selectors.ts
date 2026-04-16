@@ -10,7 +10,7 @@ export class BasketSelectors {
 
   @Selector([BasketState])
   static totalCount(state: BasketStateModel) {
-    return state.items.length;
+    return state.totalItems;
   }
 
   @Selector([BasketState])

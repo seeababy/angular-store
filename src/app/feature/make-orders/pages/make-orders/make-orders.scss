@@ -1,0 +1,78 @@
+:host {
+  display: block;
+}
+
+.make-orders {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 24px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 20px 24px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.confirm-btn {
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: none;
+  background: #ffd600;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.confirm-btn:hover {
+  background: #ffcc00;
+}
+
+.confirm-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.total {
+  font-size: 22px;
+}
+
+@media (max-width: 767px) {
+  .make-orders {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .summary {
+    justify-content: space-between;
+    order: 1;
+  }
+
+  .confirm-btn {
+    width: 100%;
+    order: 2;
+  }
+}

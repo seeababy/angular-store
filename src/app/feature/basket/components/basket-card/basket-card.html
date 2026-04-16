@@ -1,0 +1,22 @@
+  <div class="basket-list">
+    @for (item of items(); track item.productId) {
+    <div class="basket-card">
+      <img [src]="cdn + item.image" alt="product" />
+
+      <div class="basket-card__info">
+        <h3>{{ item.productName }}</h3>
+        <p>{{ item.subtotal }} ₴</p>
+      </div>
+
+      <div class="basket-card__controls">
+        <button (click)="decrease(item.productId)">-</button>
+        <span class="qty">{{ item.quantity }}</span>
+        <button (click)="increase(item.productId)">+</button>
+
+        <button class="delete-btn" (click)="removeFromCart(item.productId)">
+          <mat-icon class="icon" svgIcon="delete"></mat-icon>
+        </button>
+      </div>
+    </div>
+    }
+  </div>

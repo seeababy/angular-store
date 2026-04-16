@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-user-page',
+  selector: 'app-order-page',
   standalone: true,
   imports: [],
-  templateUrl: './user-page.html',
-  styleUrl: './user-page.scss',
+  templateUrl: './order-page.html',
+  styleUrl: './order-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserPage { }
+export class OrderPage { }

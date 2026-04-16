@@ -1,0 +1,19 @@
+<div class="menu">
+  <button
+    class="menu-item"
+    [routerLink]="['/', AppRoutesConfig.Office, AppRoutesConfig.UserPage]"
+    routerLinkActive="active"
+  >
+    <mat-icon class="icon" svgIcon="user"></mat-icon>
+    <span>Особисті дані</span>
+  </button>
+
+  <button
+    class="menu-item"
+    [routerLink]="['/', AppRoutesConfig.Office, AppRoutesConfig.OrderPage]"
+    routerLinkActive="active"
+  >
+    <mat-icon class="icon" svgIcon="order"></mat-icon>
+    <span>Замовлення</span>
+  </button>
+</div>

@@ -1,0 +1,9 @@
+<div class="order-list">
+  <div class="card">
+    <div class="title">Замовлення</div>
+
+    @for (item of items(); track item.productId) {
+      <app-order-card [item]="item" />
+    }
+  </div>
+</div>

@@ -1,0 +1,79 @@
+<div class="user-page">
+  @if (formGroup && user()) {
+
+  <div class="user-container">
+    <div class="user-avatar">
+      <div class="user-avatar__circle" [style.background]="color()">{{ shortName() }}</div>
+    </div>
+
+    <div class="user-content">
+      <mat-icon class="user-content__edit-icon" svgIcon="edit" (click)="toggleEdit()"></mat-icon>
+
+      <form class="user-form" [formGroup]="formGroup" (ngSubmit)="submit()">
+        <div class="user-row">
+          <div class="user-row__label">Ім'я</div>
+
+          @if (!isEditMode) {
+          <div class="user-row__value">{{ user()?.firstName }}</div>
+          } @else {
+          <mat-form-field class="user-row__field default-input" appearance="outline">
+            <input matInput formControlName="firstName" />
+          </mat-form-field>
+          }
+        </div>
+
+        <div class="user-row">
+          <div class="user-row__label">Прізвище</div>
+
+          @if (!isEditMode) {
+          <div class="user-row__value">{{ user()?.lastName }}</div>
+          } @else {
+          <mat-form-field class="user-row__field" appearance="outline">
+            <input matInput formControlName="lastName" />
+          </mat-form-field>
+          }
+        </div>
+
+        <div class="user-row">
+          <div class="user-row__label">Дата народження</div>
+
+          @if (!isEditMode) {
+          <div class="user-row__value">{{ user()?.birthdayDate }}</div>
+          } @else {
+          <mat-form-field class="user-row__field" appearance="outline">
+            <input matInput [matDatepicker]="picker" formControlName="birthdayDate" />
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          }
+        </div>
+
+        <div class="user-row">
+          <div class="user-row__label">Телефон</div>
+
+          @if (!isEditMode) {
+          <div class="user-row__value">{{ user()?.phoneNumber }}</div>
+          } @else {
+          <mat-form-field class="user-row__field" appearance="outline">
+            <input matInput formControlName="phoneNumber" />
+          </mat-form-field>
+          }
+        </div>
+
+        @if (isEditMode) {
+        <button
+          mat-raised-button
+          type="submit"
+          class="user-form__submit"
+          [class.user-form__submit--active]="!formGroup.pristine"
+          [disabled]="formGroup.pristine"
+        >
+          Редагувати
+        </button>
+        }
+      </form>
+    </div>
+  </div>
+
+  }
+</div>

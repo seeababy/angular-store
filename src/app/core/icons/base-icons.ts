@@ -16,4 +16,6 @@ export const BaseIcons = [
     'home',
     'guarantee',
     'star',
+    'order',
+    'edit'
 ];
