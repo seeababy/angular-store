@@ -1,0 +1,15 @@
+<div class="make-orders">
+  <app-order-form (formChanges)="formValue = $event" (formStatus)="isFormValid = $event" />
+  <app-order-list />
+
+  <div class="footer">
+    <button class="confirm-btn" (click)="submitForm()" [disabled]="!isFormValid">
+      Замовлення підтверджую
+    </button>
+
+    <div class="summary">
+      <span class="label">Разом:</span>
+      <span class="total">{{ total() }} ₴</span>
+    </div>
+  </div>
+</div>

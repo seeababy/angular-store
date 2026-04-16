@@ -1,0 +1,54 @@
+<div class="order-form">
+  @if (user(); as user) {
+
+  <div class="card">
+    <div class="title">Ваші контактні дані</div>
+    <form [formGroup]="formGroup" class="form">
+      <div class="row">
+        <div class="field readonly">
+          <div class="label">Ім'я</div>
+          <div class="value">{{ user.firstName }}</div>
+        </div>
+
+        <div class="field readonly">
+          <div class="label">Прізвище</div>
+          <div class="value">{{ user.lastName }}</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field readonly">
+          <div class="label">Пошта</div>
+          <div class="value">{{ user.email }}</div>
+        </div>
+
+        <div class="field readonly">
+          <div class="label">Телефон</div>
+          <div class="value">{{ user.phoneNumber }}</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="field" appearance="outline">
+          <input matInput placeholder="Адреса" formControlName="address" />
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="outline">
+          <input matInput placeholder="Місто" formControlName="city" />
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="field" appearance="outline">
+          <input matInput placeholder="Поштовий код" formControlName="postalCode" />
+        </mat-form-field>
+      </div>
+
+      <mat-form-field class="notes" appearance="outline">
+        <textarea matInput placeholder="Нотатки" formControlName="notes"></textarea>
+      </mat-form-field>
+    </form>
+  </div>
+
+  }
+</div>

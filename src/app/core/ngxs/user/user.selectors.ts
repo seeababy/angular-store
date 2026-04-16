@@ -1,8 +1,8 @@
 import { Selector } from '@ngxs/store';
 import { UserState, UserStateModel } from './user.state';
+import { IUser } from '../../entities/interfaces/user.interface';
 
 export class UserSelectors {
-
   @Selector([UserState])
   static isAuthorized(state: UserStateModel): boolean {
     return !!state.user;
@@ -26,5 +26,10 @@ export class UserSelectors {
   @Selector([UserState])
   static userToken(state: UserStateModel): string | null {
     return state.accessToken ?? null;
+  }
+
+  @Selector([UserState])
+  static user(state: UserStateModel): IUser | null {
+    return state.user;
   }
 }

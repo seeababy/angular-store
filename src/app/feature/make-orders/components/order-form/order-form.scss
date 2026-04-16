@@ -1,0 +1,75 @@
+:host {
+  display: block;
+  padding: 15px;
+}
+
+.order-form {
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  width: 100%;
+  max-width: 600px;
+  padding: 32px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+}
+
+.field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.readonly {
+  justify-content: center;
+}
+
+.label {
+  font-size: 13px;
+  color: #888;
+}
+
+.value {
+  font-size: 16px;
+  font-weight: 600;
+  padding-top: 5px;
+}
+
+.notes {
+  width: 100%;
+}
+
+@media (max-width: 767px) {
+  .card {
+    padding: 20px;
+  }
+
+  .row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .field {
+    width: 100%;
+  }
+}
