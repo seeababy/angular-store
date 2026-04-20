@@ -1,1 +1,11 @@
-<p>order-page works!</p>,
+<div class="orders-page">
+  @if (orders()?.length) {
+  <mat-accordion>
+    @for (order of orders(); track order.id) {
+    <app-order-item [order]="order" />
+    }
+  </mat-accordion>
+  } @else {
+  <div class="empty">Замовлень поки немає</div>
+  }
+</div>

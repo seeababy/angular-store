@@ -1,0 +1,32 @@
+<mat-expansion-panel
+  class="order-panel"
+  hideToggle
+  (opened)="opened = true"
+  (closed)="opened = false"
+>
+  <mat-expansion-panel-header class="header">
+    <div class="header-content">
+      <div class="left">
+        <div class="title">Замовлення №{{ shortId() }}</div>
+
+        @if (!opened) {
+        <div class="images">
+          @for (item of order().items; track item.productId) {
+          <img [src]="cdn + item.image" alt="product" />
+          }
+        </div>
+        }
+      </div>
+
+      <div class="right">
+        <div class="total">{{ total() }} ₴</div>
+      </div>
+    </div>
+  </mat-expansion-panel-header>
+
+  <div class="details">
+    @for (item of order().items; track item.productId) {
+    <app-order-card [item]="item" />
+    }
+  </div>
+</mat-expansion-panel>
