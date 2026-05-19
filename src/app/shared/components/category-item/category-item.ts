@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { ICategoryItem } from '../../entities/interfaces/category-item';
-import { MatIcon } from "@angular/material/icon";
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
+import { Category } from '../../entities/interfaces/category.interface';
+import { UpdateCategorySelection } from '../../../core/ngxs/categories/categories.actions';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'app-category-item',
@@ -11,5 +13,14 @@ import { MatIcon } from "@angular/material/icon";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryItem {
-  item = input<ICategoryItem>();
+  private store = inject(Store);
+
+  item = input<Category>();
+
+  go() {
+    const category = this.item();
+    if (!category) return;
+
+    this.store.dispatch(new UpdateCategorySelection(category));
+  }
 }

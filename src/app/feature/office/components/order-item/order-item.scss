@@ -63,9 +63,72 @@
   font-size: 18px;
   font-weight: 600;
   white-space: nowrap;
+  margin-right: 15px;
 }
 
 .details {
   border-top: 1px solid #eee;
   padding: 12px 20px;
+}
+
+.mobile-total {
+  display: none;
+}
+
+.desktop-total {
+  display: flex;
+}
+
+@media (max-width: 1024px) {
+  ::ng-deep .mat-expansion-panel-header {
+    padding: 16px !important;
+  }
+
+  .header-content {
+    gap: 12px;
+  }
+
+  .left {
+    gap: 8px;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .images {
+    gap: 8px;
+  }
+
+  .images img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .right {
+    font-size: 16px;
+    margin-right: 8px;
+  }
+
+  .details {
+    padding: 10px 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .desktop-total {
+    display: none;
+  }
+
+  .mobile-total {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 12px;
+    text-align: right;
+  }
+
+  .title {
+    white-space: normal;
+  }
 }

@@ -1,3 +1,5 @@
+import { Pagination } from '../../../shared/entities/interfaces/pagination.interface';
+import { ProductFilters } from '../../../shared/entities/interfaces/product-filters.interface';
 import { Product } from '../../../shared/entities/interfaces/product.interface';
 
 export interface ProductsStateModel {
@@ -6,4 +8,6 @@ export interface ProductsStateModel {
   recomendedProducts: Product[];
   currentProduct: Product | null;
   viewedProducts: Product[];
+  filters: ProductFilters;
+  pagination: Pagination;
 }

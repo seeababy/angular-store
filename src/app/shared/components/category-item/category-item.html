@@ -1,4 +1,4 @@
-<a class="link_main" routerLink="#">
-    <mat-icon class="icon" [svgIcon]="item()?.name || ''"></mat-icon>
-    <span class="text">{{ item()?.value }}</span>
-</a>
+<div class="link_main" (click)="go()">
+  <mat-icon class="icon" [svgIcon]="item()?.slug || ''"></mat-icon>
+  <span class="text">{{ item()?.name }}</span>
+</div>

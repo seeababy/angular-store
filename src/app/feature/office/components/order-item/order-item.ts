@@ -21,8 +21,4 @@ export class OrderItem {
   total() {
     return this.order().items.reduce((acc, item) => acc + item.price * item.quantity, 0);
   }
-
-  shortId() {
-    return this.order().id.slice(0, 5);
-  }
 }

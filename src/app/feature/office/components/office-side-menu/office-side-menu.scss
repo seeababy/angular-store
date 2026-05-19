@@ -46,6 +46,7 @@
 
 @media (max-width: 767px) {
   :host {
+    flex: unset;
     min-width: unset;
     width: 100%;
   }

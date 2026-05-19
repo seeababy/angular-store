@@ -1,13 +1,8 @@
-<mat-expansion-panel
-  class="order-panel"
-  hideToggle
-  (opened)="opened = true"
-  (closed)="opened = false"
->
+<mat-expansion-panel class="order-panel" (opened)="opened = true" (closed)="opened = false">
   <mat-expansion-panel-header class="header">
     <div class="header-content">
       <div class="left">
-        <div class="title">Замовлення №{{ shortId() }}</div>
+        <div class="title">Замовлення №{{ order()?.orderNumber }}</div>
 
         @if (!opened) {
         <div class="images">
@@ -18,7 +13,7 @@
         }
       </div>
 
-      <div class="right">
+      <div class="right desktop-total">
         <div class="total">{{ total() }} ₴</div>
       </div>
     </div>
@@ -28,5 +23,7 @@
     @for (item of order().items; track item.productId) {
     <app-order-card [item]="item" />
     }
+
+    <div class="total mobile-total">{{ total() }} ₴</div>
   </div>
 </mat-expansion-panel>

@@ -1,8 +1,11 @@
-import { ChangeDetectionStrategy, Component, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { MatIcon } from "@angular/material/icon";
-import { CategoryItem } from "../../../../shared/components/category-item/category-item";
-import { SocialNetworks } from "../../../../shared/components/social-networks/social-networks";
+import { MatIcon } from '@angular/material/icon';
+import { CategoryItem } from '../../../../shared/components/category-item/category-item';
+import { SocialNetworks } from '../../../../shared/components/social-networks/social-networks';
+import { Store } from '@ngxs/store';
+import { CategoriesSelectors } from '../../../../core/ngxs/categories/categories.selectors';
+import { GetCategoriesTree } from '../../../../core/ngxs/categories/categories.actions';
 
 @Component({
   selector: 'app-home-side-menu',
@@ -13,25 +16,11 @@ import { SocialNetworks } from "../../../../shared/components/social-networks/so
   imports: [RouterLink, MatIcon, CategoryItem, SocialNetworks],
 })
 export class HomeSideMenu {
-  categoryItems = [
-    {
-      name: 'laptops-computers', 
-      value: 'Ноутбуки та комп’ютери'
-    },
-        {
-      name: 'smartphones', 
-      value: 'Смартфони'
-    },
-        {
-      name: 'tv-electronics', 
-      value: 'ТВ і електроніка'
-    },
-        {
-      name: 'gaming', 
-      value: 'Товари для геймерів'
-    },
+  private store = inject(Store);
 
-  ];
+  categories = this.store.selectSignal(CategoriesSelectors.categories);
 
-
+  ngOnInit() {
+    this.store.dispatch(new GetCategoriesTree());
+  }
 }
