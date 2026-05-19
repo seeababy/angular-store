@@ -1,0 +1,22 @@
+@if (product(); as product) {
+<div class="breadcrumbs">
+  <a href="#" class="category-link">
+    <mat-icon class="icon" svgIcon="home"></mat-icon>
+  </a>
+
+  @for (category of product.categories; track $index) {
+  <span class="separator">/</span>
+  <a class="category-link">{{ category }}</a>
+  }
+</div>
+} @else if (category) {
+<div class="breadcrumbs">
+  <a href="#" class="category-link">
+    <mat-icon class="icon" svgIcon="home"></mat-icon>
+  </a>
+
+  <span class="separator">/</span>
+
+  <a class="category-link">{{ category }}</a>
+</div>
+}

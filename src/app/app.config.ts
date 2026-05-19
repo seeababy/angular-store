@@ -13,10 +13,11 @@ import { ProductsState } from './core/ngxs/products/products.state';
 import { authInterceptor } from './core/interceptors/auth-interceptor';
 import { handleerrorInterceptor } from './core/interceptors/handleerror-interceptor';
 import { OrdersState } from './core/ngxs/orders/orders.state';
+import { CategoriesState } from './core/ngxs/categories/categories.state';
 
-const states = [BasketState, UserState, ProductsState, OrdersState];
+const states = [BasketState, UserState, ProductsState, OrdersState, CategoriesState];
 
-const localStorageStates = [UserState];
+const localStorageStates = [UserState, CategoriesState];
 
 export const appConfig: ApplicationConfig = {
   providers: [

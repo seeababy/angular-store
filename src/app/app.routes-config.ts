@@ -12,5 +12,7 @@ export enum AppRoutesConfig {
   ProductCharacteristics = 'characteristics',
   ProductReviews = 'reviews',
   MakeOrder = 'make-order',
-  OrderPage = 'order'
+  OrderPage = 'order',
+  Categories = 'categories/:slug',
+  Products = 'products/:category',
 }

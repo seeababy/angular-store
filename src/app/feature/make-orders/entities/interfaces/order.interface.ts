@@ -3,6 +3,7 @@ import { IShippingAddress } from './shipping-address.interface';
 
 export interface IOrder {
   id: string;
+  orderNumber?: string;
   userId: string;
   items: IOrderItem[];
   total: number;

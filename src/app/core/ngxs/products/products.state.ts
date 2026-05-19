@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Action, NgxsOnInit, State, StateContext } from '@ngxs/store';
+import { Action, State, StateContext } from '@ngxs/store';
 import { ProductsStateModel } from './products.model';
 import {
   AddRecentlyProducts,
@@ -9,38 +9,68 @@ import {
   GetProducts,
   GetRecommendedProducts,
   GetViewedProducts,
-  SetProducts,
+  UpdateFilters,
 } from './products.actions';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
 import { ApiResponse } from '../../entities/interfaces/api-response.interface';
 import { Product } from '../../../shared/entities/interfaces/product.interface';
 import { Review } from '../../../shared/entities/interfaces/review-interface';
+import { ProductsResponse } from '../../../shared/entities/interfaces/products-response.interface';
 
 @State<ProductsStateModel>({
   name: 'products',
   defaults: {
     homeProducts: [],
     products: [],
+    pagination: {
+      page: 1,
+      totalPages: 1,
+    },
     recomendedProducts: [],
     currentProduct: null,
     viewedProducts: [],
+    filters: {
+      categories: [],
+    },
   },
 })
 @Injectable()
-export class ProductsState implements NgxsOnInit {
+export class ProductsState {
   private http = inject(HttpClient);
   apiUrl = 'http://localhost:3000/api';
 
-  ngxsOnInit(ctx: StateContext<ProductsStateModel>) {
-    ctx.dispatch(new GetProducts());
-  }
-
   @Action(GetProducts)
   getProducts(ctx: StateContext<ProductsStateModel>) {
-    return this.http
-      .get<any[]>(`${this.apiUrl}/products`)
-      .pipe(map((products: any[]) => ctx.dispatch(new SetProducts(products[0]))));
+    const { filters } = ctx.getState();
+    let params = new HttpParams();
+
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value == null) return;
+
+      if (Array.isArray(value)) {
+        value.forEach((item) => {
+          params = params.append(key, item);
+        });
+        return;
+      }
+
+      params = params.set(key, value);
+    });
+
+    return this.http.get<ApiResponse<ProductsResponse>>(`${this.apiUrl}/products`, { params }).pipe(
+      tap((res) => {
+        if (res.success) {
+          ctx.patchState({
+            products: res.data.products,
+            pagination: {
+              page: res.data.page,
+              totalPages: res.data.totalPages,
+            },
+          });
+        }
+      }),
+    );
   }
 
   @Action(GetHomeProducts)
@@ -63,13 +93,6 @@ export class ProductsState implements NgxsOnInit {
         }
       }),
     );
-  }
-
-  @Action(SetProducts)
-  setProducts(ctx: StateContext<ProductsStateModel>, action: SetProducts) {
-    // ctx.setState({
-    //   products: action.products
-    // });
   }
 
   @Action(GetProductById)
@@ -128,5 +151,18 @@ export class ProductsState implements NgxsOnInit {
         .filter((item) => item.id !== currentProduct.id);
       ctx.patchState({ viewedProducts: [currentProduct, ...viewedProducts] });
     }
+  }
+
+  @Action(UpdateFilters)
+  updateFilters(ctx: StateContext<ProductsStateModel>, action: UpdateFilters) {
+    ctx.patchState({
+      filters: {
+        ...ctx.getState().filters,
+        ...action.filters,
+      },
+      currentProduct: null,
+    });
+
+    return ctx.dispatch(new GetProducts());
   }
 }

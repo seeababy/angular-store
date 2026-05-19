@@ -11,11 +11,7 @@ import { Product } from '../../../../shared/entities/interfaces/product.interfac
 import { Card } from '../../../../shared/components/card/card';
 import { Slider } from '../../../../shared/components/slider/slider';
 import { homeSliderItems } from '../../../../core/mock-data/home-slider';
-import {
-  GetHomeProducts,
-  GetRecommendedProducts,
-  SetProducts,
-} from '../../../../core/ngxs/products/products.actions';
+import { GetHomeProducts } from '../../../../core/ngxs/products/products.actions';
 import { HomeSideMenu } from '../../components/side-menu/home-side-menu';
 import { ProductsSelectors } from '../../../../core/ngxs/products/products.selectors';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';

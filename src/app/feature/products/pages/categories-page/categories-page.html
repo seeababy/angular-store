@@ -1,0 +1,19 @@
+@if (currentParentCategory()) {
+<div class="category-page">
+  <h2 class="title">{{ currentParentCategory()?.name }}</h2>
+
+  <div class="subcategories-list">
+    @for (child of currentParentCategory()?.children; track child.id) {
+
+    <div class="subcategory-card" (click)="selectCategory(child)">
+      <div class="image-placeholder">
+        <img [src]="'assets/images/sub-categories/' + child.slug + '.jpg'" [alt]="child.name" />
+      </div>
+
+      <div class="name">{{ child.name }}</div>
+    </div>
+
+    }
+  </div>
+</div>
+}

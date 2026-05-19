@@ -1,0 +1,23 @@
+<div class="paginator">
+  <button class="nav-btn" (click)="prevPage()" [disabled]="currentPage() === 1">
+    ‹
+  </button>
+
+  @for (page of getPages(); track page) {
+  <button
+    class="page-btn"
+    [class.active]="page === currentPage()"
+    (click)="setPage(page)"
+  >
+    {{ page }}
+  </button>
+  }
+
+  <button
+    class="nav-btn"
+    (click)="nextPage()"
+    [disabled]="currentPage() === totalPages()"
+  >
+    ›
+  </button>
+</div>

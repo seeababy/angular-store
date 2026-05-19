@@ -1,9 +1,4 @@
-import { Product } from '../../../shared/entities/interfaces/product.interface';
-
-export class SetProducts {
-  static readonly type = '[Products] Set Products';
-  constructor(public products: Product[]) {}
-}
+import { ProductFilters } from "../../../shared/entities/interfaces/product-filters.interface";
 
 export class GetProducts {
   static readonly type = '[Products] Get Products';
@@ -37,3 +32,9 @@ export class GetViewedProducts {
 export class AddRecentlyProducts {
   static readonly type = '[Products] Add Recently Products';
 }
+
+export class UpdateFilters {
+  static readonly type = '[Products] Update Filters';
+  constructor(public filters: Partial<ProductFilters>) {}
+}
+

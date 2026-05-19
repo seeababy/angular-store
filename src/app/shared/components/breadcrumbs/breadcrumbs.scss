@@ -3,7 +3,7 @@
   padding: 15px;
 }
 
-.category-switcher {
+.breadcrumbs {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -11,7 +11,7 @@
 }
 
 @media (max-width: 1024px) {
-  .category-switcher {
+  .breadcrumbs {
     flex-wrap: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
@@ -20,7 +20,7 @@
     scroll-snap-type: x proximity;
   }
 
-  .category-switcher::-webkit-scrollbar {
+  .breadcrumbs::-webkit-scrollbar {
     display: none; 
   }
 

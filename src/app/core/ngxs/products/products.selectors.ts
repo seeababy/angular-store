@@ -40,5 +40,9 @@ export class ProductsSelectors {
   static viewedProducts(state: ProductsStateModel): Product[] {
     return state.viewedProducts;
   }
-}
 
+  @Selector([ProductsState])
+  static pagination(state: ProductsStateModel) {
+    return state.pagination;
+  }
+}
