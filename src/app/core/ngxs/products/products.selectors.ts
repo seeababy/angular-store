@@ -45,4 +45,9 @@ export class ProductsSelectors {
   static pagination(state: ProductsStateModel) {
     return state.pagination;
   }
+
+  @Selector([ProductsState])
+  static loading(state: ProductsStateModel): boolean {
+    return state.loading;
+  }
 }
