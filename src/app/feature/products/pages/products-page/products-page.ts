@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 import { Breadcrumbs } from '../../../../shared/components/breadcrumbs/breadcrumbs';
 import { Paginator } from '../../../../shared/components/paginator/paginator';
+import { ProductsPageSkeleton } from "../../components/products-page-skeleton/products-page-skeleton";
 
 @Component({
   selector: 'app-products-page',
@@ -33,7 +34,8 @@ import { Paginator } from '../../../../shared/components/paginator/paginator';
     MatButtonModule,
     Breadcrumbs,
     Paginator,
-  ],
+    ProductsPageSkeleton
+],
 })
 export class ProductsPage implements OnInit {
   private store = inject(Store);
@@ -41,6 +43,7 @@ export class ProductsPage implements OnInit {
 
   products = this.store.selectSignal(ProductsSelectors.products);
   pagination = this.store.selectSignal(ProductsSelectors.pagination);
+  loading = this.store.selectSignal(ProductsSelectors.loading);
 
   cardsPerRow = 3;
   sortValue = 'price_asc';

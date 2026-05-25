@@ -33,6 +33,7 @@ import { ProductsResponse } from '../../../shared/entities/interfaces/products-r
     filters: {
       categories: [],
     },
+    loading: false,
   },
 })
 @Injectable()
@@ -40,9 +41,47 @@ export class ProductsState {
   private http = inject(HttpClient);
   apiUrl = 'http://localhost:3000/api';
 
+  // @Action(GetProducts)
+  // getProducts(ctx: StateContext<ProductsStateModel>) {
+  //   const { filters } = ctx.getState();
+  //   let params = new HttpParams();
+
+  //   Object.entries(filters).forEach(([key, value]) => {
+  //     if (value == null) return;
+
+  //     if (Array.isArray(value)) {
+  //       value.forEach((item) => {
+  //         params = params.append(key, item);
+  //       });
+  //       return;
+  //     }
+
+  //     params = params.set(key, value);
+  //   });
+
+  //   return this.http.get<ApiResponse<ProductsResponse>>(`${this.apiUrl}/products`, { params }).pipe(
+  //     tap((res) => {
+  //       if (res.success) {
+  //         ctx.patchState({
+  //           products: res.data.products,
+  //           pagination: {
+  //             page: res.data.page,
+  //             totalPages: res.data.totalPages,
+  //           },
+  //         });
+  //       }
+  //     }),
+  //   );
+  // }
+
   @Action(GetProducts)
   getProducts(ctx: StateContext<ProductsStateModel>) {
+    ctx.patchState({
+      loading: true,
+    });
+
     const { filters } = ctx.getState();
+
     let params = new HttpParams();
 
     Object.entries(filters).forEach(([key, value]) => {
@@ -52,25 +91,33 @@ export class ProductsState {
         value.forEach((item) => {
           params = params.append(key, item);
         });
+
         return;
       }
 
       params = params.set(key, value);
     });
 
-    return this.http.get<ApiResponse<ProductsResponse>>(`${this.apiUrl}/products`, { params }).pipe(
-      tap((res) => {
-        if (res.success) {
-          ctx.patchState({
-            products: res.data.products,
-            pagination: {
-              page: res.data.page,
-              totalPages: res.data.totalPages,
-            },
-          });
-        }
-      }),
-    );
+    return this.http
+      .get<ApiResponse<ProductsResponse>>(`${this.apiUrl}/products`, {
+        params,
+      })
+      .pipe(
+        tap((res) => {
+          if (res.success) {
+            ctx.patchState({
+              products: res.data.products,
+
+              pagination: {
+                page: res.data.page,
+                totalPages: res.data.totalPages,
+              },
+
+              loading: false,
+            });
+          }
+        }),
+      );
   }
 
   @Action(GetHomeProducts)

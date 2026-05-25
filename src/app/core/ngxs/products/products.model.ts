@@ -10,4 +10,5 @@ export interface ProductsStateModel {
   viewedProducts: Product[];
   filters: ProductFilters;
   pagination: Pagination;
+  loading: boolean;
 }
