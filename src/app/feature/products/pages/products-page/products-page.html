@@ -3,98 +3,94 @@
 } @else {
 <div class="page">
   <div class="filters">
-    @for (filter of filters; track filter) {
-
+    @for ( filter of availableFilters(); track filter.field ) {
     <div class="filter-block">
-      @if (filter.type === 'slider' && filter.key === 'price') {
-      <h3>Ціна</h3>
-
+      <h3>{{ filter.label }}</h3>
+      @if (filter.type === 'range') {
       <div class="price-inputs">
-        <input type="number" [(ngModel)]="filter.value" (change)="applyFilters()" />
+        <input
+          type="number"
+          [ngModel]="getRangeValue(filter, 0)"
+          (ngModelChange)="updateRangeFilter(filter.field, 0, +$event)"
+        />
+
         <span>—</span>
-        <input type="number" [(ngModel)]="filter.secondValue" (change)="applyFilters()" />
+
+        <input
+          type="number"
+          [ngModel]="getRangeValue(filter, 1)"
+          (ngModelChange)="updateRangeFilter(filter.field, 1, +$event)"
+        />
       </div>
 
-      <mat-slider [min]="filter.min" [max]="filter.max" step="100">
-        <input matSliderStartThumb [(ngModel)]="filter.value" (change)="applyFilters()" />
-        <input matSliderEndThumb [(ngModel)]="filter.secondValue" (change)="applyFilters()" />
+      <mat-slider [min]="filter.minV" [max]="filter.maxV" step="1">
+        <input
+          matSliderStartThumb
+          [ngModel]="getRangeValue(filter, 0)"
+          (ngModelChange)="updateRangeFilter(filter.field, 0, +$event)"
+        />
+
+        <input
+          matSliderEndThumb
+          [ngModel]="getRangeValue(filter, 1)"
+          (ngModelChange)="updateRangeFilter(filter.field, 1, +$event)"
+        />
       </mat-slider>
-      } @if (filter.type === 'slider' && filter.key === 'rating') {
-      <h3>Рейтинг</h3>
-
-      <div class="range-values">
-        <span>{{ filter.value }}</span>
-      </div>
-
-      <mat-slider [min]="filter.min" [max]="filter.max" step="1" discrete>
-        <input matSliderThumb [(ngModel)]="filter.value" (change)="applyFilters()" />
-      </mat-slider>
-      } @if (filter.type === 'multiselect') {
-      <h3>Колір</h3>
-
+      } @if ( filter.type === 'multiselect' || filter.type === 'select' ) {
       <div class="checkbox-list">
-        @for (item of filter.items; track item.cssColor) {
-        <mat-checkbox [checked]="item.checked" (change)="selectColor(item)">
-          <span class="color-dot" [style.background]="item.cssColor"></span>
-
-          {{ item.label }}
+        @for ( value of filter.values; track value ) {
+        <mat-checkbox
+          [checked]=" isSelected( filter.field, value ) "
+          (change)=" toggleValue( filter.field, value ) "
+        >
+          {{ value }}
         </mat-checkbox>
         }
       </div>
       }
     </div>
-
     @if (!$last) {
     <div class="divider"></div>
     } }
   </div>
-
   <div class="content">
     @if ((products()?.length ?? 0) > 0) {
-
     <app-breadcrumbs />
-
     <div class="products-header">
       <div class="sort-dropdown">
         <mat-form-field appearance="outline">
           <mat-select [(ngModel)]="sortValue" (selectionChange)="applyFilters()">
-            @for (option of sortOptions; track option.value) {
+            @for ( option of sortOptions; track option.value ) {
             <mat-option [value]="option.value">{{ option.label }}</mat-option>
             }
           </mat-select>
         </mat-form-field>
       </div>
-
       <div class="view-switcher">
         <button [class.active]="cardsPerRow === 3" (click)="cardsPerRow = 3" type="button">
           <mat-icon svgIcon="grid-3"></mat-icon>
         </button>
-
         <button [class.active]="cardsPerRow === 4" (click)="cardsPerRow = 4" type="button">
           <mat-icon svgIcon="grid-4"></mat-icon>
         </button>
       </div>
     </div>
-
     <div class="products" [class.cols-4]="cardsPerRow === 4">
-      @for (product of products(); track product.id) {
-      <app-card class="card-item" [product]="product"></app-card>
+      @for ( product of products(); track product.id ) {
+      <app-card class="card-item" [product]="product" />
       }
     </div>
-
-    @if (pagination().totalPages > 1) {
+    @if ( pagination().totalPages > 1 ) {
     <app-paginator
       [currentPage]="pagination().page"
       [totalPages]="pagination().totalPages"
       (pageChange)="setPage($event)"
     />
     } } @else {
-
     <div class="products-empty">
       <img src="/assets/images/basket/empty-basket.jpg" alt="Товари не знайдено" />
       <p>Товари не знайдено</p>
     </div>
-
     }
   </div>
 </div>

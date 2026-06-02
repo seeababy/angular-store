@@ -4,6 +4,7 @@ import { Product } from '../../../shared/entities/interfaces/product.interface';
 import { ProductsStateModel } from './products.model';
 import { Characteristics } from '../../../shared/entities/interfaces/characteristics.interface';
 import { Review } from '../../../shared/entities/interfaces/review-interface';
+import { ProductFilter } from '../../../shared/entities/interfaces/product-filter.interface';
 
 export class ProductsSelectors {
   @Selector([ProductsState])
@@ -50,4 +51,10 @@ export class ProductsSelectors {
   static loading(state: ProductsStateModel): boolean {
     return state.loading;
   }
+
+  @Selector([ProductsState])
+  static availableFilters(state: ProductsStateModel): ProductFilter[] {
+    return state.availableFilters;
+  }
 }
+
