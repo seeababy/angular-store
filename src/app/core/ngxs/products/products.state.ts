@@ -9,6 +9,8 @@ import {
   GetProducts,
   GetRecommendedProducts,
   GetViewedProducts,
+  LoadFilters,
+  ResetFilters,
   UpdateFilters,
 } from './products.actions';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -17,6 +19,7 @@ import { ApiResponse } from '../../entities/interfaces/api-response.interface';
 import { Product } from '../../../shared/entities/interfaces/product.interface';
 import { Review } from '../../../shared/entities/interfaces/review-interface';
 import { ProductsResponse } from '../../../shared/entities/interfaces/products-response.interface';
+import { ProductFilter } from '../../../shared/entities/interfaces/product-filter.interface';
 
 @State<ProductsStateModel>({
   name: 'products',
@@ -34,45 +37,13 @@ import { ProductsResponse } from '../../../shared/entities/interfaces/products-r
       categories: [],
     },
     loading: false,
+    availableFilters: [],
   },
 })
 @Injectable()
 export class ProductsState {
   private http = inject(HttpClient);
   apiUrl = 'http://localhost:3000/api';
-
-  // @Action(GetProducts)
-  // getProducts(ctx: StateContext<ProductsStateModel>) {
-  //   const { filters } = ctx.getState();
-  //   let params = new HttpParams();
-
-  //   Object.entries(filters).forEach(([key, value]) => {
-  //     if (value == null) return;
-
-  //     if (Array.isArray(value)) {
-  //       value.forEach((item) => {
-  //         params = params.append(key, item);
-  //       });
-  //       return;
-  //     }
-
-  //     params = params.set(key, value);
-  //   });
-
-  //   return this.http.get<ApiResponse<ProductsResponse>>(`${this.apiUrl}/products`, { params }).pipe(
-  //     tap((res) => {
-  //       if (res.success) {
-  //         ctx.patchState({
-  //           products: res.data.products,
-  //           pagination: {
-  //             page: res.data.page,
-  //             totalPages: res.data.totalPages,
-  //           },
-  //         });
-  //       }
-  //     }),
-  //   );
-  // }
 
   @Action(GetProducts)
   getProducts(ctx: StateContext<ProductsStateModel>) {
@@ -211,5 +182,35 @@ export class ProductsState {
     });
 
     return ctx.dispatch(new GetProducts());
+  }
+
+  @Action(LoadFilters)
+  loadFilters(ctx: StateContext<ProductsStateModel>, action: LoadFilters) {
+    let params = new HttpParams();
+
+    action.categories.forEach((c) => {
+      params = params.append('categories', c);
+    });
+
+    return this.http
+      .get<ApiResponse<ProductFilter[]>>(`${this.apiUrl}/products/filters`, { params })
+      .pipe(
+        tap((res) => {
+          if (res.success) {
+            ctx.patchState({
+              availableFilters: res.data,
+            });
+          }
+        }),
+      );
+  }
+
+  @Action(ResetFilters)
+  resetFilters(ctx: StateContext<ProductsStateModel>) {
+    ctx.patchState({
+      filters: {
+        categories: [],
+      },
+    });
   }
 }

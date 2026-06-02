@@ -2,21 +2,28 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { ProductsSelectors } from '../../../../core/ngxs/products/products.selectors';
 import { Store } from '@ngxs/store';
 import { Card } from '../../../../shared/components/card/card';
-import { GetProducts, UpdateFilters } from '../../../../core/ngxs/products/products.actions';
+import {
+  GetProducts,
+  LoadFilters,
+  ResetFilters,
+  UpdateFilters,
+} from '../../../../core/ngxs/products/products.actions';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-
 import { MatSliderModule } from '@angular/material/slider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-
 import { Breadcrumbs } from '../../../../shared/components/breadcrumbs/breadcrumbs';
 import { Paginator } from '../../../../shared/components/paginator/paginator';
-import { ProductsPageSkeleton } from "../../components/products-page-skeleton/products-page-skeleton";
-
+import { ProductsPageSkeleton } from '../../components/products-page-skeleton/products-page-skeleton';
+import {
+  AppliedFilter,
+  ProductFilter,
+} from '../../../../shared/entities/interfaces/product-filter.interface';
+import { ProductFilters } from '../../../../shared/entities/interfaces/product-filters.interface';
 @Component({
   selector: 'app-products-page',
   templateUrl: './products-page.html',
@@ -34,8 +41,8 @@ import { ProductsPageSkeleton } from "../../components/products-page-skeleton/pr
     MatButtonModule,
     Breadcrumbs,
     Paginator,
-    ProductsPageSkeleton
-],
+    ProductsPageSkeleton,
+  ],
 })
 export class ProductsPage implements OnInit {
   private store = inject(Store);
@@ -44,39 +51,11 @@ export class ProductsPage implements OnInit {
   products = this.store.selectSignal(ProductsSelectors.products);
   pagination = this.store.selectSignal(ProductsSelectors.pagination);
   loading = this.store.selectSignal(ProductsSelectors.loading);
+  availableFilters = this.store.selectSignal(ProductsSelectors.availableFilters);
 
+  appliedFilters: AppliedFilter[] = [];
   cardsPerRow = 3;
   sortValue = 'price_asc';
-
-  filters = [
-    {
-      type: 'slider',
-      key: 'price',
-      min: 99,
-      max: 200000,
-      value: 99,
-      secondValue: 200000,
-    },
-    {
-      type: 'slider',
-      key: 'rating',
-      min: 1,
-      max: 5,
-      value: 1,
-    },
-    {
-      type: 'multiselect',
-      key: 'color',
-      items: [
-        { label: 'Чорний', cssColor: '#000000', checked: false },
-        { label: 'Білий', cssColor: '#FFFFFF', checked: false },
-        { label: 'Синій', cssColor: '#0000FF', checked: false },
-        { label: 'Червоний', cssColor: '#FF0000', checked: false },
-        { label: 'Зелений', cssColor: '#008000', checked: false },
-      ],
-    },
-  ];
-
   sortOptions = [
     { value: 'price_asc', label: 'Від дешевих до дорогих' },
     { value: 'price_desc', label: 'Від дорогих до дешевих' },
@@ -90,76 +69,131 @@ export class ProductsPage implements OnInit {
     this.route.paramMap.subscribe((params) => {
       const category = params.get('category');
 
+      this.appliedFilters = [];
+
       if (!category) {
-        this.store.dispatch(new GetProducts());
+        this.store.dispatch([new ResetFilters(), new GetProducts()]);
+
         return;
       }
 
-      this.store.dispatch(
+      this.store.dispatch([
+        new ResetFilters(),
         new UpdateFilters({
           categories: [category],
         }),
-      );
+        new LoadFilters([category]),
+      ]);
     });
   }
 
-  selectColor(selected: any) {
-    const colorFilter = this.filters.find((f) => f.key === 'color');
-    if (!colorFilter?.items) return;
+  getFilter(field: string) {
+    return this.appliedFilters.find((filter) => filter.field === field);
+  }
 
-    colorFilter.items.forEach((item: any) => {
-      item.checked = false;
-    });
+  getRangeValue(filter: ProductFilter, index: 0 | 1): number {
+    const applied = this.getFilter(filter.field);
 
-    selected.checked = true;
+    if (applied) {
+      return (applied.value as [number, number])[index];
+    }
+
+    if (filter.type === 'range') {
+      return index === 0 ? filter.minV : filter.maxV;
+    }
+
+    return 0;
+  }
+
+  updateRangeFilter(field: string, index: number, value: number) {
+    const existingFilter = this.getFilter(field);
+
+    if (!existingFilter) {
+      const rangeFilter = this.availableFilters().find(
+        (f) => f.field === field && f.type === 'range',
+      );
+
+      if (!rangeFilter || rangeFilter.type !== 'range') {
+        return;
+      }
+
+      const rangeValue: [number, number] = [rangeFilter.minV, rangeFilter.maxV];
+
+      rangeValue[index] = value;
+
+      this.appliedFilters.push({
+        field,
+
+        value: rangeValue,
+      });
+
+      this.applyFilters();
+
+      return;
+    }
+
+    const currentValue: [number, number] = [...(existingFilter.value as [number, number])];
+
+    currentValue[index] = value;
+
+    existingFilter.value = currentValue;
 
     this.applyFilters();
   }
 
-  applyFilters() {
-    const result: any = {};
+  toggleValue(field: string, value: string) {
+    const existingFilter = this.getFilter(field);
+    if (!existingFilter) {
+      this.appliedFilters.push({ field, value: [value] });
+      this.applyFilters();
+      return;
+    }
+    const values = [...(existingFilter.value as string[])];
+    const exists = values.includes(value);
+    existingFilter.value = exists ? values.filter((v) => v !== value) : [...values, value];
+    this.applyFilters();
+  }
 
-    if (this.sortValue) {
-      result.sortBy = this.sortValue;
+  isSelected(field: string, value: string): boolean {
+    const filter = this.getFilter(field);
+    if (!filter) {
+      return false;
+    }
+    return (filter.value as string[]).includes(value);
+  }
+
+  applyFilters() {
+    const result: Partial<ProductFilters> = { sortBy: this.sortValue, page: 1 };
+    const category = this.route.snapshot.paramMap.get('category');
+
+    if (category) {
+      result.categories = [category];
     }
 
-    this.filters.forEach((filter: any) => {
-      if (filter.type === 'slider') {
-        if (filter.key === 'price') {
-          result.minPrice = filter.value;
-          result.maxPrice = filter.secondValue;
-        }
-
-        if (filter.key === 'rating') {
-          result.minRating = filter.value;
-        }
-      }
-
-      if (filter.type === 'multiselect') {
-        const selected = filter.items?.find((i: any) => i.checked);
-
-        if (selected) {
-          result.color = selected.cssColor;
-        }
-      }
-
-      if (filter.type === 'select') {
-        if (filter.key === 'sortBy') {
-          result.sortBy = filter.value;
-        }
+    this.appliedFilters.forEach((filter) => {
+      if (filter.field === 'price') {
+        const [min, max] = filter.value as [number, number];
+        result.minPrice = min;
+        result.maxPrice = max;
+      } else if (filter.field === 'averageRating') {
+        result.minRating = (filter.value as number[])[0];
+      } else if (filter.field === 'color') {
+        result.color = (filter.value as string[])[0];
+      } else if (filter.field.startsWith('char:')) {
+        const charTitle = filter.field.slice(5);
+        result.charFilters ??= [];
+        (filter.value as string[]).forEach((v) => {
+          result.charFilters?.push(`${charTitle}:${v}`);
+        })
       }
     });
-
     this.store.dispatch(new UpdateFilters(result));
   }
 
   setPage(page: number) {
-    if (page < 1 || page > this.pagination().totalPages) return;
-
-    this.store.dispatch(
-      new UpdateFilters({
-        page,
-      }),
-    );
+    if (page < 1 || page > this.pagination().totalPages) {
+      return;
+    }
+    this.store.dispatch(new UpdateFilters({ page }));
   }
 }
