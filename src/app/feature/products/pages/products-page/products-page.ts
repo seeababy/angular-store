@@ -102,6 +102,8 @@ export class ProductsPage implements OnInit {
 
   filtersForm!: FormGroup;
 
+  private builtFromFilters?: ProductFilter[];
+
   cardsPerRow = 3;
 
   sortValue = 'price_asc';
@@ -136,7 +138,7 @@ export class ProductsPage implements OnInit {
   constructor() {
     effect(() => {
       const filters = this.availableFilters();
-      console.log(filters);
+
       if (filters.length && this.shouldBuildFiltersForm(filters)) {
         this.buildFiltersForm(filters);
         this.cdr.detectChanges();
@@ -338,25 +340,32 @@ export class ProductsPage implements OnInit {
   }
 
   private shouldBuildFiltersForm(filters: ProductFilter[]): boolean {
-    // const formFields = Object.keys(this.filtersForm.controls);
-    //
-    // if (formFields.length !== filters.length) {
-    //   return true;
-    // }
-    //
-    // return filters.some((filter, index) => formFields[index] !== filter.field);
-    return true;
+    return this.builtFromFilters !== filters;
+  }
+
+  private getInitialRangeValue(filter: ProductFilter, index: 0 | 1): number {
+    if (filter.type !== 'range') {
+      return 0;
+    }
+
+    const applied = this.getFilterValue(filter.field);
+
+    if (Array.isArray(applied) && applied.length === 2) {
+      return Number(applied[index]);
+    }
+
+    return index === 0 ? filter.minV : filter.maxV;
   }
 
   private buildFiltersForm(filters: ProductFilter[]) {
+    this.builtFromFilters = filters;
     this.filtersForm = new FormGroup({});
-    console.log(this.filtersForm);
 
     filters.forEach((filter) => {
       if (filter.type === 'range') {
-        const minControl = new FormControl(this.getRangeValue(filter, 0));
+        const minControl = new FormControl(this.getInitialRangeValue(filter, 0));
 
-        const maxControl = new FormControl(this.getRangeValue(filter, 1));
+        const maxControl = new FormControl(this.getInitialRangeValue(filter, 1));
 
         minControl.valueChanges
           .pipe(debounceTime(5000), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
@@ -369,7 +378,7 @@ export class ProductsPage implements OnInit {
           });
 
         maxControl.valueChanges
-          .pipe(debounceTime(10000), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
+          .pipe(debounceTime(500), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
           .subscribe((value) => {
             if (value == null) {
               return;
