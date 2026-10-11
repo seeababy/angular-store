@@ -13,9 +13,4 @@ export class CategoriesSelectors {
   static loading(state: CategoriesStateModel): boolean {
     return state.loading;
   }
-
-  @Selector([CategoriesState])
-  static currentParentCategory(state: CategoriesStateModel): Category {
-    return state.selectedCategories[0];
-  }
 }

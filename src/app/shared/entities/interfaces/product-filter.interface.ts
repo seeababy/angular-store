@@ -1,5 +1,3 @@
-export type ProductFilter = RangeFilter | ValuesFilter;
-
 export interface RangeFilter {
   type: 'range';
   field: 'price' | 'averageRating';
@@ -15,7 +13,10 @@ export interface ValuesFilter {
   values: string[];
 }
 
-export interface AppliedFilter {
-  field: string;
-  value: string | string[] | [number, number];
+export type ProductFilter = RangeFilter | ValuesFilter;
+
+export type AppliedFilterValue = [number | undefined, number | undefined] | string[];
+
+export interface AppliedFilters {
+  [field: string]: AppliedFilterValue;
 }

@@ -14,8 +14,16 @@ import { authInterceptor } from './core/interceptors/auth-interceptor';
 import { handleerrorInterceptor } from './core/interceptors/handleerror-interceptor';
 import { OrdersState } from './core/ngxs/orders/orders.state';
 import { CategoriesState } from './core/ngxs/categories/categories.state';
+import { ProductFiltersState } from './core/ngxs/product-filters/product-filters.state';
 
-const states = [BasketState, UserState, ProductsState, OrdersState, CategoriesState];
+const states = [
+  BasketState,
+  UserState,
+  ProductsState,
+  ProductFiltersState,
+  OrdersState,
+  CategoriesState,
+];
 
 const localStorageStates = [UserState, CategoriesState];
 

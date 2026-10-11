@@ -19,7 +19,7 @@ export class ProductsSelectors {
 
   @Selector([ProductsState])
   static recommendedProducts(state: ProductsStateModel): Product[] {
-    return state.recomendedProducts;
+    return state.recommendedProducts;
   }
 
   @Selector([ProductsState])
@@ -51,10 +51,4 @@ export class ProductsSelectors {
   static loading(state: ProductsStateModel): boolean {
     return state.loading;
   }
-
-  @Selector([ProductsState])
-  static availableFilters(state: ProductsStateModel): ProductFilter[] {
-    return state.availableFilters;
-  }
 }
-

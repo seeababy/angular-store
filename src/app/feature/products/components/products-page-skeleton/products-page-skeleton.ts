@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Skeleton } from "../../../../shared/components/skeleton/skeleton";
+import { Skeleton } from '../../../../shared/components/skeleton/skeleton';
 
 @Component({
   selector: 'app-products-page-skeleton',
@@ -11,5 +11,5 @@ import { Skeleton } from "../../../../shared/components/skeleton/skeleton";
 })
 export class ProductsPageSkeleton {
   cards = Array(6).fill(0);
-  checkboxes = Array(5).fill(0);
+  filters = Array(4).fill(0);
 }

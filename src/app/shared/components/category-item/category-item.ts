@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { Category } from '../../entities/interfaces/category.interface';
-import { UpdateCategorySelection } from '../../../core/ngxs/categories/categories.actions';
 import { Store } from '@ngxs/store';
+import { SetCategory } from '../../../core/ngxs/product-filters/product-filters.actions';
 
 @Component({
   selector: 'app-category-item',
@@ -21,6 +21,6 @@ export class CategoryItem {
     const category = this.item();
     if (!category) return;
 
-    this.store.dispatch(new UpdateCategorySelection(category));
+    this.store.dispatch(new SetCategory(category));
   }
 }

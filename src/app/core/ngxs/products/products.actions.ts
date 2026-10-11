@@ -1,5 +1,3 @@
-import { ProductFilters } from '../../../shared/entities/interfaces/product-filters.interface';
-
 export class GetProducts {
   static readonly type = '[Products] Get Products';
 }
@@ -31,18 +29,4 @@ export class GetViewedProducts {
 
 export class AddRecentlyProducts {
   static readonly type = '[Products] Add Recently Products';
-}
-
-export class UpdateFilters {
-  static readonly type = '[Products] Update Filters';
-  constructor(public filters: Partial<ProductFilters>) {}
-}
-
-export class LoadFilters {
-  static readonly type = '[Products] Load Filters';
-  constructor(public categories: string[]) {}
-}
-
-export class ResetFilters {
-  static readonly type = '[Products] Reset Filters';
 }

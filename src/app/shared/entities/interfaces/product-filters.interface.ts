@@ -1,10 +1,8 @@
+import { AppliedFilters } from './product-filter.interface';
+
 export interface ProductFilters {
-  categories: string[];
+  category?: string;
   page?: number;
-  minPrice?: number;
-  maxPrice?: number;
-  minRating?: number;
-  color?: string;
-  charFilters?: string[];
   sortBy?: string;
+  appliedFilters?: AppliedFilters;
 }

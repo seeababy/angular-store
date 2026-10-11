@@ -1,6 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { Action, State, StateContext } from '@ngxs/store';
+import { Action, NgxsOnInit, State, StateContext, Store } from '@ngxs/store';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { distinctUntilChanged, filter, tap } from 'rxjs/operators';
+import { isEmpty, isEqual } from 'lodash';
+
 import { ProductsStateModel } from './products.model';
+
 import {
   AddRecentlyProducts,
   AddReview,
@@ -9,20 +14,18 @@ import {
   GetProducts,
   GetRecommendedProducts,
   GetViewedProducts,
-  LoadFilters,
-  ResetFilters,
-  UpdateFilters,
 } from './products.actions';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { map, tap } from 'rxjs/operators';
+
 import { ApiResponse } from '../../entities/interfaces/api-response.interface';
 import { Product } from '../../../shared/entities/interfaces/product.interface';
 import { Review } from '../../../shared/entities/interfaces/review-interface';
 import { ProductsResponse } from '../../../shared/entities/interfaces/products-response.interface';
-import { ProductFilter } from '../../../shared/entities/interfaces/product-filter.interface';
+
+import { ProductFiltersSelectors } from '../product-filters/product-filters.selectors';
 
 @State<ProductsStateModel>({
   name: 'products',
+
   defaults: {
     homeProducts: [],
     products: [],
@@ -30,20 +33,30 @@ import { ProductFilter } from '../../../shared/entities/interfaces/product-filte
       page: 1,
       totalPages: 1,
     },
-    recomendedProducts: [],
+    recommendedProducts: [],
     currentProduct: null,
     viewedProducts: [],
-    filters: {
-      categories: [],
-    },
     loading: false,
-    availableFilters: [],
   },
 })
 @Injectable()
-export class ProductsState {
+export class ProductsState implements NgxsOnInit {
   private http = inject(HttpClient);
+  private store = inject(Store);
+
   apiUrl = 'http://localhost:3000/api';
+
+  ngxsOnInit(ctx: StateContext<ProductsStateModel>) {
+    this.store
+      .select(ProductFiltersSelectors.selectedFilters)
+      .pipe(
+        filter((filters) => !isEmpty(filters)),
+        distinctUntilChanged((prev, curr) => isEqual(prev, curr)),
+      )
+      .subscribe(() => {
+        this.store.dispatch(new GetProducts());
+      });
+  }
 
   @Action(GetProducts)
   getProducts(ctx: StateContext<ProductsStateModel>) {
@@ -51,44 +64,82 @@ export class ProductsState {
       loading: true,
     });
 
-    const { filters } = ctx.getState();
+    const filters = this.store.selectSnapshot(ProductFiltersSelectors.selectedFilters);
+
+    const availableFilters = this.store.selectSnapshot(ProductFiltersSelectors.availableFilters);
 
     let params = new HttpParams();
 
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value == null) return;
+    if (filters.category) {
+      params = params.set('category', filters.category);
+    }
 
-      if (Array.isArray(value)) {
-        value.forEach((item) => {
-          params = params.append(key, item);
-        });
+    if (filters.page != null) {
+      params = params.set('page', filters.page);
+    }
+
+    if (filters.sortBy) {
+      params = params.set('sortBy', filters.sortBy);
+    }
+
+    const appliedFilters = filters.appliedFilters ?? {};
+
+    Object.entries(appliedFilters).forEach(([field, value]) => {
+      if (value == null) {
+        return;
+      }
+
+      const filter = availableFilters.find((item) => item.field === field);
+
+      if (!filter) {
+        return;
+      }
+
+      if (filter.type === 'range') {
+        const [min, max] = value as [number | undefined, number | undefined];
+
+        if (min != null) {
+          params = params.set(`${filter.field}[min]`, String(min));
+        }
+
+        if (max != null) {
+          params = params.set(`${filter.field}[max]`, String(max));
+        }
 
         return;
       }
 
-      params = params.set(key, value);
+      const values = value as string[];
+
+      values.forEach((item) => {
+        if (!item) {
+          return;
+        }
+
+        params = params.append(filter.field, item);
+      });
     });
 
-    return this.http
-      .get<ApiResponse<ProductsResponse>>(`${this.apiUrl}/products`, {
-        params,
-      })
-      .pipe(
-        tap((res) => {
-          if (res.success) {
-            ctx.patchState({
-              products: res.data.products,
+    return this.http.get<ApiResponse<ProductsResponse>>(`${this.apiUrl}/products`, { params }).pipe(
+      tap((res) => {
+        if (res.success) {
+          ctx.patchState({
+            products: res.data.products,
 
-              pagination: {
-                page: res.data.page,
-                totalPages: res.data.totalPages,
-              },
+            pagination: {
+              page: res.data.page,
+              totalPages: res.data.totalPages,
+            },
 
-              loading: false,
-            });
-          }
-        }),
-      );
+            loading: false,
+          });
+        } else {
+          ctx.patchState({
+            loading: false,
+          });
+        }
+      }),
+    );
   }
 
   @Action(GetHomeProducts)
@@ -96,7 +147,9 @@ export class ProductsState {
     return this.http.get<ApiResponse<Product[]>>(`${this.apiUrl}/products/home`).pipe(
       tap((res: ApiResponse<Product[]>) => {
         if (res.success) {
-          ctx.patchState({ homeProducts: res.data });
+          ctx.patchState({
+            homeProducts: res.data,
+          });
         }
       }),
     );
@@ -107,7 +160,9 @@ export class ProductsState {
     return this.http.get<ApiResponse<Product[]>>(`${this.apiUrl}/products/recommended`).pipe(
       tap((res: ApiResponse<Product[]>) => {
         if (res.success) {
-          ctx.patchState({ recomendedProducts: res.data });
+          ctx.patchState({
+            recommendedProducts: res.data,
+          });
         }
       }),
     );
@@ -118,7 +173,9 @@ export class ProductsState {
     return this.http.get<ApiResponse<Product>>(`${this.apiUrl}/products/${action.id}`).pipe(
       tap((res: ApiResponse<Product>) => {
         if (res.success) {
-          ctx.patchState({ currentProduct: res.data });
+          ctx.patchState({
+            currentProduct: res.data,
+          });
         }
       }),
     );
@@ -134,11 +191,14 @@ export class ProductsState {
         tap((res: ApiResponse<Review>) => {
           const state = ctx.getState();
 
-          if (!res.success || !state.currentProduct) return;
+          if (!res.success || !state.currentProduct) {
+            return;
+          }
 
           ctx.patchState({
             currentProduct: {
               ...state.currentProduct,
+
               reviews: [...(state.currentProduct.reviews ?? []), res.data],
             },
           });
@@ -160,57 +220,20 @@ export class ProductsState {
   }
 
   @Action(AddRecentlyProducts)
-  AddRecentlyProducts(ctx: StateContext<ProductsStateModel>) {
-    const currentProduct = ctx.getState().currentProduct as Product;
-    if (currentProduct) {
-      const viewedProducts = ctx
-        .getState()
-        .viewedProducts.slice(0, 18)
-        .filter((item) => item.id !== currentProduct.id);
-      ctx.patchState({ viewedProducts: [currentProduct, ...viewedProducts] });
+  addRecentlyProducts(ctx: StateContext<ProductsStateModel>) {
+    const currentProduct = ctx.getState().currentProduct;
+
+    if (!currentProduct) {
+      return;
     }
-  }
 
-  @Action(UpdateFilters)
-  updateFilters(ctx: StateContext<ProductsStateModel>, action: UpdateFilters) {
+    const viewedProducts = ctx
+      .getState()
+      .viewedProducts.slice(0, 18)
+      .filter((item) => item.id !== currentProduct.id);
+
     ctx.patchState({
-      filters: {
-        ...ctx.getState().filters,
-        ...action.filters,
-      },
-      currentProduct: null,
-    });
-
-    return ctx.dispatch(new GetProducts());
-  }
-
-  @Action(LoadFilters)
-  loadFilters(ctx: StateContext<ProductsStateModel>, action: LoadFilters) {
-    let params = new HttpParams();
-
-    action.categories.forEach((c) => {
-      params = params.append('categories', c);
-    });
-
-    return this.http
-      .get<ApiResponse<ProductFilter[]>>(`${this.apiUrl}/products/filters`, { params })
-      .pipe(
-        tap((res) => {
-          if (res.success) {
-            ctx.patchState({
-              availableFilters: res.data,
-            });
-          }
-        }),
-      );
-  }
-
-  @Action(ResetFilters)
-  resetFilters(ctx: StateContext<ProductsStateModel>) {
-    ctx.patchState({
-      filters: {
-        categories: [],
-      },
+      viewedProducts: [currentProduct, ...viewedProducts],
     });
   }
 }

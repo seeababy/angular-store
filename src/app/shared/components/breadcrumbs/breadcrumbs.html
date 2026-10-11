@@ -4,7 +4,7 @@
     <mat-icon class="icon" svgIcon="home"></mat-icon>
   </a>
 
-  @for (category of product.categories; track $index) {
+  @for (category of getBreadcrumbs(product.categories); track $index) {
   <span class="separator">/</span>
   <a class="category-link">{{ category }}</a>
   }
