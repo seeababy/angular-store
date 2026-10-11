@@ -38,16 +38,10 @@
   width: 10px;
 }
 
-.range-values {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.checkbox-list {
+.generic-filter-content {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 18px;
 }
 
 .content {

@@ -18,4 +18,8 @@ export class Breadcrumbs {
 
   product = this.store.selectSignal(ProductsSelectors.currentProduct);
   category = this.route.snapshot.paramMap.get('category');
+
+  getBreadcrumbs(categories: string[]): string[] {
+    return categories.slice(1);
+  }
 }

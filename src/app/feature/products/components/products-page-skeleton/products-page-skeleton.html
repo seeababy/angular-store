@@ -14,29 +14,20 @@
       <app-skeleton height="44px" radius="20px"></app-skeleton>
     </div>
 
+    @for (filter of filters; track $index) {
     <div class="divider"></div>
 
     <div class="filter-block">
       <app-skeleton width="100px" height="26px"></app-skeleton>
 
-      <div class="range-values">
-        <app-skeleton width="24px" height="18px"></app-skeleton>
-      </div>
-
-      <app-skeleton height="48px" radius="20px"></app-skeleton>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="filter-block">
-      <app-skeleton width="80px" height="26px"></app-skeleton>
-
-      <div class="checkbox-list">
-        @for (item of checkboxes; track $index) {
+      <div class="generic-filter-content">
         <app-skeleton height="18px" width="100%"></app-skeleton>
-        }
+        <app-skeleton height="18px" width="100%"></app-skeleton>
+        <app-skeleton height="18px" width="100%"></app-skeleton>
+        <app-skeleton height="18px" width="100%"></app-skeleton>
       </div>
     </div>
+    }
   </div>
 
   <div class="content">

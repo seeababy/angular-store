@@ -1,29 +1,63 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { ProductsSelectors } from '../../../../core/ngxs/products/products.selectors';
-import { Store } from '@ngxs/store';
-import { Card } from '../../../../shared/components/card/card';
 import {
-  GetProducts,
-  LoadFilters,
-  ResetFilters,
-  UpdateFilters,
-} from '../../../../core/ngxs/products/products.actions';
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  effect,
+  inject,
+  OnInit,
+} from '@angular/core';
+
+import { Store } from '@ngxs/store';
 import { ActivatedRoute } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+
+import {
+  FormArray,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+
 import { MatSliderModule } from '@angular/material/slider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+
+import { KeyValuePipe } from '@angular/common';
+
+import { debounceTime, distinctUntilChanged } from 'rxjs';
+
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
+import { ProductsSelectors } from '../../../../core/ngxs/products/products.selectors';
+
+import {
+  LoadFilters,
+  ResetFilters,
+  SetCategory,
+  UpdateFilters,
+} from '../../../../core/ngxs/product-filters/product-filters.actions';
+
+import { ProductFiltersSelectors } from '../../../../core/ngxs/product-filters/product-filters.selectors';
+
+import { CategoriesSelectors } from '../../../../core/ngxs/categories/categories.selectors';
+
+import { Card } from '../../../../shared/components/card/card';
 import { Breadcrumbs } from '../../../../shared/components/breadcrumbs/breadcrumbs';
 import { Paginator } from '../../../../shared/components/paginator/paginator';
 import { ProductsPageSkeleton } from '../../components/products-page-skeleton/products-page-skeleton';
+
+import { Category } from '../../../../shared/entities/interfaces/category.interface';
+
 import {
-  AppliedFilter,
+  AppliedFilters,
   ProductFilter,
 } from '../../../../shared/entities/interfaces/product-filter.interface';
-import { ProductFilters } from '../../../../shared/entities/interfaces/product-filters.interface';
+import { values } from 'lodash';
+
 @Component({
   selector: 'app-products-page',
   templateUrl: './products-page.html',
@@ -33,6 +67,7 @@ import { ProductFilters } from '../../../../shared/entities/interfaces/product-f
   imports: [
     Card,
     FormsModule,
+    ReactiveFormsModule,
     MatSliderModule,
     MatCheckboxModule,
     MatSelectModule,
@@ -42,158 +77,334 @@ import { ProductFilters } from '../../../../shared/entities/interfaces/product-f
     Breadcrumbs,
     Paginator,
     ProductsPageSkeleton,
+    KeyValuePipe,
   ],
 })
 export class ProductsPage implements OnInit {
   private store = inject(Store);
   private route = inject(ActivatedRoute);
+  private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
 
   products = this.store.selectSignal(ProductsSelectors.products);
-  pagination = this.store.selectSignal(ProductsSelectors.pagination);
-  loading = this.store.selectSignal(ProductsSelectors.loading);
-  availableFilters = this.store.selectSignal(ProductsSelectors.availableFilters);
 
-  appliedFilters: AppliedFilter[] = [];
+  pagination = this.store.selectSignal(ProductsSelectors.pagination);
+
+  loading = this.store.selectSignal(ProductsSelectors.loading);
+
+  availableFilters = this.store.selectSignal(ProductFiltersSelectors.availableFilters);
+
+  selectedFilters = this.store.selectSignal(ProductFiltersSelectors.selectedFilters);
+
+  categories = this.store.selectSignal(CategoriesSelectors.categories);
+
+  currentCategory?: Category;
+
+  filtersForm!: FormGroup;
+
   cardsPerRow = 3;
+
   sortValue = 'price_asc';
+
   sortOptions = [
-    { value: 'price_asc', label: 'Від дешевих до дорогих' },
-    { value: 'price_desc', label: 'Від дорогих до дешевих' },
-    { value: 'rating_desc', label: 'За рейтингом' },
-    { value: 'views_desc', label: 'За популярністю' },
-    { value: 'newest', label: 'Новинки' },
-    { value: 'oldest', label: 'Спочатку старі' },
+    {
+      value: 'price_asc',
+      label: 'Від дешевих до дорогих',
+    },
+    {
+      value: 'price_desc',
+      label: 'Від дорогих до дешевих',
+    },
+    {
+      value: 'rating_desc',
+      label: 'За рейтингом',
+    },
+    {
+      value: 'views_desc',
+      label: 'За популярністю',
+    },
+    {
+      value: 'newest',
+      label: 'Новинки',
+    },
+    {
+      value: 'oldest',
+      label: 'Спочатку старі',
+    },
   ];
 
-  ngOnInit() {
-    this.route.paramMap.subscribe((params) => {
-      const category = params.get('category');
-
-      this.appliedFilters = [];
-
-      if (!category) {
-        this.store.dispatch([new ResetFilters(), new GetProducts()]);
-
-        return;
+  constructor() {
+    effect(() => {
+      const filters = this.availableFilters();
+      console.log(filters);
+      if (filters.length && this.shouldBuildFiltersForm(filters)) {
+        this.buildFiltersForm(filters);
+        this.cdr.detectChanges();
       }
+    });
 
-      this.store.dispatch([
-        new ResetFilters(),
-        new UpdateFilters({
-          categories: [category],
-        }),
-        new LoadFilters([category]),
-      ]);
+    effect(() => {
+      const categories = this.categories();
+      const categorySlug = this.route.snapshot.paramMap.get('category');
+
+      if (!categories.length || !categorySlug) return;
+
+      this.currentCategory = categories.find((category) => category.slug === categorySlug);
     });
   }
 
-  getFilter(field: string) {
-    return this.appliedFilters.find((filter) => filter.field === field);
+  ngOnInit() {
+    const category = this.route.snapshot.paramMap.get('category');
+
+    if (!category) {
+      return;
+    }
+
+    this.store.dispatch(new LoadFilters(category));
+
+    this.store.dispatch(
+      new UpdateFilters({
+        category,
+        page: 1,
+      }),
+    );
+  }
+
+  selectSubCategory(category: Category) {
+    this.store.dispatch(new SetCategory(category, true));
+  }
+
+  getAppliedFilters(): AppliedFilters {
+    return this.selectedFilters().appliedFilters ?? {};
+  }
+
+  hasAppliedFilters(): boolean {
+    return Object.values(this.getAppliedFilters()).some((value) => {
+      if (Array.isArray(value)) {
+        return value.some((item) => item !== null && item != '');
+      }
+
+      return value !== null && value !== '';
+    });
+  }
+
+  clearFilters() {
+    this.availableFilters().forEach((filter) => {
+      const formGroup = this.filtersForm.get(filter.field);
+
+      if (!formGroup) return;
+
+      if (filter.type === 'range') {
+        formGroup.get('min')?.setValue(filter.minV, { emitEvent: false });
+        formGroup.get('max')?.setValue(filter.maxV, { emitEvent: false });
+      } else {
+        const formArray = formGroup.get('values') as FormArray;
+
+        formArray.controls.forEach((control) => {
+          control.get('checked')?.setValue(false, { emitEvent: false });
+        });
+      }
+    });
+    this.store.dispatch(new ResetFilters());
+  }
+
+  getFilterValue(field: string) {
+    return this.getAppliedFilters()[field];
+  }
+
+  getFilter(field: string): ProductFilter | undefined {
+    return this.availableFilters().find((item) => item.field === field);
   }
 
   getRangeValue(filter: ProductFilter, index: 0 | 1): number {
-    const applied = this.getFilter(filter.field);
-
-    if (applied) {
-      return (applied.value as [number, number])[index];
+    if (filter.type !== 'range') {
+      return 0;
     }
 
-    if (filter.type === 'range') {
+    const control = this.filtersForm.get(filter.field);
+
+    if (!control) {
       return index === 0 ? filter.minV : filter.maxV;
     }
 
-    return 0;
+    const controlName = index === 0 ? 'min' : 'max';
+    const value = control.get(controlName)?.value;
+
+    return Number(value ?? (index === 0 ? filter.minV : filter.maxV));
   }
 
-  updateRangeFilter(field: string, index: number, value: number) {
-    const existingFilter = this.getFilter(field);
+  updateRangeFilter(field: string, index: 0 | 1, value: number) {
+    const filter = this.availableFilters().find((item) => item.field === field);
 
-    if (!existingFilter) {
-      const rangeFilter = this.availableFilters().find(
-        (f) => f.field === field && f.type === 'range',
-      );
+    if (!filter || filter.type !== 'range') return;
 
-      if (!rangeFilter || rangeFilter.type !== 'range') {
-        return;
-      }
+    const currentValue = this.getFilterValue(field);
 
-      const rangeValue: [number, number] = [rangeFilter.minV, rangeFilter.maxV];
+    let range: [number | undefined, number | undefined];
 
-      rangeValue[index] = value;
-
-      this.appliedFilters.push({
-        field,
-
-        value: rangeValue,
-      });
-
-      this.applyFilters();
-
-      return;
+    if (Array.isArray(currentValue) && currentValue.length === 2) {
+      range = [Number(currentValue[0]), Number(currentValue[1])];
+    } else {
+      range = [filter.minV, filter.maxV];
     }
 
-    const currentValue: [number, number] = [...(existingFilter.value as [number, number])];
+    range[index] = value;
 
-    currentValue[index] = value;
-
-    existingFilter.value = currentValue;
-
-    this.applyFilters();
+    this.store.dispatch(
+      new UpdateFilters({
+        page: 1,
+        appliedFilters: {
+          [field]: range,
+        },
+      }),
+    );
   }
 
   toggleValue(field: string, value: string) {
-    const existingFilter = this.getFilter(field);
-    if (!existingFilter) {
-      this.appliedFilters.push({ field, value: [value] });
-      this.applyFilters();
-      return;
+    const currentValue = this.getFilterValue(field);
+
+    const values = Array.isArray(currentValue) ? [...(currentValue as string[])] : [];
+
+    const index = values.indexOf(value);
+
+    if (index >= 0) {
+      values.splice(index, 1);
+    } else {
+      values.push(value);
     }
-    const values = [...(existingFilter.value as string[])];
-    const exists = values.includes(value);
-    existingFilter.value = exists ? values.filter((v) => v !== value) : [...values, value];
-    this.applyFilters();
+
+    this.store.dispatch(
+      new UpdateFilters({
+        page: 1,
+        appliedFilters: {
+          [field]: values,
+        },
+      }),
+    );
+  }
+
+  selectSingleValue(field: string, value: string) {
+    const formArray = this.filtersForm.get(field)?.get('values') as FormArray;
+
+    formArray.controls.forEach((control) => {
+      control.get('checked')?.setValue(control.get('value')?.value === value, { emitEvent: false });
+    });
+
+    this.store.dispatch(
+      new UpdateFilters({
+        page: 1,
+        appliedFilters: {
+          [field]: [value],
+        },
+      }),
+    );
   }
 
   isSelected(field: string, value: string): boolean {
-    const filter = this.getFilter(field);
-    if (!filter) {
+    const currentValue = this.getFilterValue(field);
+
+    if (!Array.isArray(currentValue)) {
       return false;
     }
-    return (filter.value as string[]).includes(value);
+
+    return (currentValue as string[]).includes(value);
   }
 
-  applyFilters() {
-    const result: Partial<ProductFilters> = { sortBy: this.sortValue, page: 1 };
-    const category = this.route.snapshot.paramMap.get('category');
+  updateSort(value: string) {
+    this.sortValue = value;
 
-    if (category) {
-      result.categories = [category];
-    }
-
-    this.appliedFilters.forEach((filter) => {
-      if (filter.field === 'price') {
-        const [min, max] = filter.value as [number, number];
-        result.minPrice = min;
-        result.maxPrice = max;
-      } else if (filter.field === 'averageRating') {
-        result.minRating = (filter.value as number[])[0];
-      } else if (filter.field === 'color') {
-        result.color = (filter.value as string[])[0];
-      } else if (filter.field.startsWith('char:')) {
-        const charTitle = filter.field.slice(5);
-        result.charFilters ??= [];
-        (filter.value as string[]).forEach((v) => {
-          result.charFilters?.push(`${charTitle}:${v}`);
-        })
-      }
-    });
-    this.store.dispatch(new UpdateFilters(result));
+    this.store.dispatch(
+      new UpdateFilters({
+        sortBy: value,
+        page: 1,
+      }),
+    );
   }
 
   setPage(page: number) {
     if (page < 1 || page > this.pagination().totalPages) {
       return;
     }
-    this.store.dispatch(new UpdateFilters({ page }));
+
+    this.store.dispatch(
+      new UpdateFilters({
+        page,
+      }),
+    );
+  }
+
+  getArrayControls(key: string) {
+    return (this.filtersForm.get(key)?.get('values') as FormArray).controls;
+  }
+
+  private shouldBuildFiltersForm(filters: ProductFilter[]): boolean {
+    // const formFields = Object.keys(this.filtersForm.controls);
+    //
+    // if (formFields.length !== filters.length) {
+    //   return true;
+    // }
+    //
+    // return filters.some((filter, index) => formFields[index] !== filter.field);
+    return true;
+  }
+
+  private buildFiltersForm(filters: ProductFilter[]) {
+    this.filtersForm = new FormGroup({});
+    console.log(this.filtersForm);
+
+    filters.forEach((filter) => {
+      if (filter.type === 'range') {
+        const minControl = new FormControl(this.getRangeValue(filter, 0));
+
+        const maxControl = new FormControl(this.getRangeValue(filter, 1));
+
+        minControl.valueChanges
+          .pipe(debounceTime(5000), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
+          .subscribe((value) => {
+            if (value == null) {
+              return;
+            }
+
+            this.updateRangeFilter(filter.field, 0, Number(value));
+          });
+
+        maxControl.valueChanges
+          .pipe(debounceTime(10000), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
+          .subscribe((value) => {
+            if (value == null) {
+              return;
+            }
+
+            this.updateRangeFilter(filter.field, 1, Number(value));
+          });
+
+        this.filtersForm.addControl(
+          filter.field,
+          new FormGroup({
+            type: new FormControl(filter.type),
+            min: minControl,
+            max: maxControl,
+          }),
+        );
+
+        return;
+      }
+
+      this.filtersForm.addControl(
+        filter.field,
+        new FormGroup({
+          type: new FormControl(filter.type),
+          values: new FormArray(
+            filter.values.map(
+              (value) =>
+                new FormGroup({
+                  checked: new FormControl(this.isSelected(filter.field, value)),
+                  value: new FormControl(value),
+                }),
+            ),
+          ),
+        }),
+      );
+    });
   }
 }

@@ -47,12 +47,7 @@ export const routes: Routes = [
           import('../../make-orders/pages/make-orders/make-orders')
             .then(c => c.MakeOrders)
       },
-      {
-        path: AppRoutesConfig.Categories,
-        loadComponent: () =>
-          import('../../products/pages/categories-page/categories-page')
-            .then(c => c.CategoriesPage),
-      },
+
       {
         path: AppRoutesConfig.Products,
         loadComponent: () =>
