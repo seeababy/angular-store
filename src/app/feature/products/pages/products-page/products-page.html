@@ -20,94 +20,24 @@
           <h3>{{ filter.label | apiText: 'labels' }}</h3>
 
           @if (filter.type === 'range') {
-            <div class="price-inputs">
-              <input
-                type="number"
-                formControlName="min"
-                [min]="filter.minV"
-                [max]="filter.maxV"
-                (focusout)="updateRangeFilter(filter.field, 0, filtersForm.get(filter.field)?.value?.['min'] ?? 0)"
-              />
-
-              <span>—</span>
-
-              <input
-                type="number"
-                formControlName="max"
-                [min]="filter.minV"
-                [max]="filter.maxV"
-                (focusout)="updateRangeFilter(filter.field, 1, filtersForm.get(filter.field)?.value?.['max'] ?? 0)"
-              />
-            </div>
-
-            <mat-slider
-              [min]="filter.minV"
-              [max]="filter.maxV"
-              step="1"
-              discrete
-            >
-              <input
-                matSliderStartThumb
-                formControlName="min"
-              />
-
-              <input
-                matSliderEndThumb
-                formControlName="max"
-              />
-            </mat-slider>
+            <app-range-filter
+              [filter]="filter"
+              [group]="getGroup(filter.field)"
+            />
           }
 
           @if (filter.type === 'multiselect') {
-            <div
-              formArrayName="values"
-              class="checkbox-list"
-            >
-              @for (
-                formArrayItem of getArrayControls(filter.field);
-                track formArrayItem.value.value
-                ) {
-                <ng-container [formGroupName]="$index">
-                  <mat-checkbox
-                    formControlName="checked"
-                    (change)="
-                      toggleValue(
-                        filter.field,
-                        formArrayItem.value.value
-                      )
-                    "
-                  >
-                    {{ formArrayItem.value.value | apiText: 'values' }}
-                  </mat-checkbox>
-                </ng-container>
-              }
-            </div>
+            <app-multiselect-filter
+              [filter]="filter"
+              [group]="getGroup(filter.field)"
+            />
           }
 
           @if (filter.type === 'select') {
-            <div
-              formArrayName="values"
-              class="checkbox-list"
-            >
-              @for (
-                formArrayItem of getArrayControls(filter.field);
-                track formArrayItem.value.value
-                ) {
-                <ng-container [formGroupName]="$index">
-                  <mat-checkbox
-                    formControlName="checked"
-                    (change)="
-                      selectSingleValue(
-                        filter.field,
-                        formArrayItem.value.value
-                      )
-                    "
-                  >
-                    {{ formArrayItem.value.value | apiText: 'values' }}
-                  </mat-checkbox>
-                </ng-container>
-              }
-            </div>
+            <app-select-filter
+              [filter]="filter"
+              [group]="getGroup(filter.field)"
+            />
           }
         </div>
 
