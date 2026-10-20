@@ -9,11 +9,11 @@
     </div>
 
     <div class="about__info">
-      <h1 class="about__name">{{ product.name }}</h1>
-      <p class="about__description">{{ product.description }}</p>
+      <h1 class="about__name">{{ product.name | apiText: 'products' }}</h1>
+      <p class="about__description">{{ product.description | apiText: 'products' }}</p>
 
       <div class="about__colors">
-        <span>Колір: {{ product.color }}</span>
+        <span>{{ 'product.color' | translate: { value: (product.color | apiText: 'values') } }}</span>
 
         <div class="about__colors-list">
           @for (relatedProduct of relatedProducts; track relatedProduct.id) {
@@ -33,12 +33,12 @@
 
       <div class="about__bottom">
         <span class="about__price">{{ product.price }} ₴</span>
-        <button class="about__buy" (click)="goToBasket()">Купити</button>
+        <button class="about__buy" (click)="goToBasket()">{{ 'product.buy' | translate }}</button>
       </div>
 
       <div class="about__guarantee">
         <mat-icon svgIcon="guarantee"></mat-icon>
-        <span>Гарантія: {{ product.guarantee }}</span>
+        <span>{{ 'product.warranty' | translate: { value: (product.guarantee | apiText: 'values') } }}</span>
       </div>
     </div>
   </div>

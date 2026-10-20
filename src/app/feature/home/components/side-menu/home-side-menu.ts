@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
@@ -13,7 +14,7 @@ import { GetCategoriesTree } from '../../../../core/ngxs/categories/categories.a
   styleUrl: './home-side-menu.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [RouterLink, MatIcon, CategoryItem, SocialNetworks],
+  imports: [TranslateModule, RouterLink, MatIcon, CategoryItem, SocialNetworks],
 })
 export class HomeSideMenu {
   private store = inject(Store);

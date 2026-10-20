@@ -1,3 +1,4 @@
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ChangeDetectionStrategy, Component, OnInit, DestroyRef, inject, ChangeDetectorRef } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Store } from '@ngxs/store';
@@ -20,7 +21,7 @@ import { IUser } from '../../../../core/entities/interfaces/user.interface';
   templateUrl: './user-page.html',
   styleUrl: './user-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
+  imports: [TranslateModule, 
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -35,6 +36,7 @@ export class UserPage implements OnInit {
   private store = inject(Store);
   private destroyRef = inject(DestroyRef);
   private snackBar = inject(MatSnackBar);
+  private translate = inject(TranslateService);
   private cdr = inject(ChangeDetectorRef);
 
   user = this.store.selectSignal(UserSelectors.user);
@@ -90,7 +92,7 @@ export class UserPage implements OnInit {
       )
       .subscribe({
         next: () => {
-          this.snackBar.open('Дані збережено', 'OK', {
+          this.snackBar.open(this.translate.instant('office.saved'), 'OK', {
             duration: 3000,
           });
 
@@ -99,7 +101,7 @@ export class UserPage implements OnInit {
           this.cdr.detectChanges();
         },
         error: () => {
-          this.snackBar.open('Сталася помилка', 'OK', {
+          this.snackBar.open(this.translate.instant('office.error'), 'OK', {
             duration: 3000,
           });
         },

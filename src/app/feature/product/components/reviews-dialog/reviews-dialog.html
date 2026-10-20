@@ -1,4 +1,4 @@
-<h2 class="dialog-title">Залишити відгук</h2>
+<h2 class="dialog-title">{{ 'product.leaveReview' | translate }}</h2>
 
 <div class="stars">
   @for (star of stars; track $index) {
@@ -13,9 +13,9 @@
 <form [formGroup]="reviewForm" (ngSubmit)="submit()" class="form">
   <textarea
     formControlName="comment"
-    placeholder="Ваш коментар..."
+    [placeholder]="'product.yourComment' | translate"
     class="form__textarea"
   ></textarea>
 
-  <button type="submit" class="submit-btn" [disabled]="reviewForm.invalid">Відправити</button>
+  <button type="submit" class="submit-btn" [disabled]="reviewForm.invalid">{{ 'product.send' | translate }}</button>
 </form>

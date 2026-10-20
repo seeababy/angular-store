@@ -1,9 +1,11 @@
+import { ApiTextPipe } from '../../../../shared/pipes/api-text.pipe';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { IOrderItem } from '../../entities/interfaces/order-item.interface';
 
 @Component({
   selector: 'app-order-card',
   standalone: true,
+  imports: [ApiTextPipe],
   templateUrl: './order-card.html',
   styleUrl: './order-card.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

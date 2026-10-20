@@ -2,17 +2,17 @@
     <form [formGroup]="formGroup" (ngSubmit)="submit()" class="login-form">
 
         <mat-form-field class="input">
-            <mat-label>Email</mat-label>
+            <mat-label>{{ 'auth.email' | translate }}</mat-label>
             <input matInput formControlName="identifier" />
         </mat-form-field>
 
         <mat-form-field class="input">
-            <mat-label>Password</mat-label>
+            <mat-label>{{ 'auth.password' | translate }}</mat-label>
             <input matInput type="password" formControlName="password" />
         </mat-form-field>
 
         <button mat-raised-button type="submit" class="btn">
-            Вхід
+            {{ 'auth.login' | translate }}
         </button>
 
     </form>

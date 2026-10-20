@@ -6,7 +6,7 @@
 
   @for (category of getBreadcrumbs(product.categories); track $index) {
   <span class="separator">/</span>
-  <a class="category-link">{{ category }}</a>
+  <a class="category-link">{{ category | apiText: 'categories' }}</a>
   }
 </div>
 } @else if (category) {
@@ -17,7 +17,7 @@
 
   <span class="separator">/</span>
 
-  <a class="category-link">{{ category }}</a>
+  <a class="category-link">{{ category | apiText: 'categories' }}</a>
 </div>
 }
 

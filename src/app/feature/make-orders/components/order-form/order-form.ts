@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -22,7 +23,7 @@ import { IMakeOrderForm } from '../../entities/interfaces/make-order-form.interf
   templateUrl: './order-form.html',
   styleUrl: './order-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule],
+  imports: [TranslateModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
 })
 export class OrderForm implements OnInit {
   private store = inject(Store);

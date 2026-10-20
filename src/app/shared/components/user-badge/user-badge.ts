@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatIcon } from "@angular/material/icon";
 import { AppRoutesConfig } from '../../../app.routes-config';
@@ -13,7 +14,7 @@ import { Logout } from '../../../core/ngxs/user/user.actions';
   styleUrl: './user-badge.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatIcon, RouterLink, MatMenuTrigger, MatMenu],
+  imports: [TranslateModule, MatIcon, RouterLink, MatMenuTrigger, MatMenu],
 })
 export class UserBadge {
   private store = inject(Store);

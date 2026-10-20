@@ -7,6 +7,8 @@ import { BasketSelectors } from '../../../core/ngxs/basket/basket.selectors';
 import { UserBadge } from "../../components/user-badge/user-badge";
 import { ClickOutside } from '../../directives/click-outside';
 import { UserSelectors } from '../../../core/ngxs/user/user.selectors'; // NEW
+import { TranslateModule } from '@ngx-translate/core';
+import { LanguageService } from '../../../core/services/language.service';
 
 @Component({
   selector: 'app-header',
@@ -14,11 +16,14 @@ import { UserSelectors } from '../../../core/ngxs/user/user.selectors'; // NEW
   styleUrl: './header.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatIcon, RouterLink, UserBadge, ClickOutside],
+  imports: [MatIcon, RouterLink, UserBadge, ClickOutside, TranslateModule],
 })
 export class Header {
 
   store = inject(Store);
+  private languageService = inject(LanguageService);
+
+  currentLang = this.languageService.current;
 
   basketCount = this.store.selectSignal(BasketSelectors.totalCount);
   AppRoutesConfig = AppRoutesConfig;
@@ -45,6 +50,10 @@ export class Header {
       this.searchHistory = history ? JSON.parse(history) : [];
 
     });
+  }
+
+  toggleLanguage(): void {
+    this.languageService.use(this.currentLang() === 'uk' ? 'en' : 'uk');
   }
 
   openSearch(): void {

@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -9,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './reviews-dialog.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ReactiveFormsModule, MatIconModule],
+  imports: [TranslateModule, ReactiveFormsModule, MatIconModule],
 })
 export class ReviewsDialog {
   private dialogRef = inject(MatDialogRef<ReviewsDialog>);

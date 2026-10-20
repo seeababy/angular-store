@@ -1,3 +1,4 @@
+import { ApiTextPipe } from '../../pipes/api-text.pipe';
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { Category } from '../../entities/interfaces/category.interface';
@@ -7,7 +8,7 @@ import { SetCategory } from '../../../core/ngxs/product-filters/product-filters.
 @Component({
   selector: 'app-category-item',
   standalone: true,
-  imports: [MatIcon],
+  imports: [ApiTextPipe, MatIcon],
   templateUrl: './category-item.html',
   styleUrl: './category-item.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

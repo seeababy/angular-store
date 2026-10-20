@@ -4,7 +4,7 @@
       <img [src]="cdn + item.image" alt="product" />
 
       <div class="basket-card__info">
-        <h3>{{ item.productName }}</h3>
+        <h3>{{ item.productName | apiText: 'products' }}</h3>
         <p>{{ item.subtotal }} ₴</p>
       </div>
 

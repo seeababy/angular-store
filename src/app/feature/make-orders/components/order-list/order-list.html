@@ -1,6 +1,6 @@
 <div class="order-list">
   <div class="card">
-    <div class="title">Замовлення</div>
+    <div class="title">{{ 'order.title' | translate }}</div>
 
     @for (item of items(); track item.productId) {
       <app-order-card [item]="item" />

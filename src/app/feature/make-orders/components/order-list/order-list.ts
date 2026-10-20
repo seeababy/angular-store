@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { OrderCard } from "../order-card/order-card";
 import { BasketSelectors } from '../../../../core/ngxs/basket/basket.selectors';
@@ -6,7 +7,7 @@ import { Store } from '@ngxs/store';
 @Component({
   selector: 'app-order-list',
   standalone: true,
-  imports: [OrderCard],
+  imports: [TranslateModule, OrderCard],
   templateUrl: './order-list.html',
   styleUrl: './order-list.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

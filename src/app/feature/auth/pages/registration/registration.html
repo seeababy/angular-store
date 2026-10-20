@@ -2,33 +2,33 @@
     <form [formGroup]="formGroup" (ngSubmit)="submit()" class="registration-form">
 
         <mat-form-field class="input">
-            <mat-label>Email</mat-label>
+            <mat-label>{{ 'auth.email' | translate }}</mat-label>
             <input matInput formControlName="email" />
         </mat-form-field>
 
         <mat-form-field class="input">
-            <mat-label>Phone number</mat-label>
+            <mat-label>{{ 'auth.phoneNumber' | translate }}</mat-label>
             <input matInput formControlName="phoneNumber" />
         </mat-form-field>
 
 
         <mat-form-field class="input">
-            <mat-label>Password</mat-label>
+            <mat-label>{{ 'auth.password' | translate }}</mat-label>
             <input matInput type="password" formControlName="password" />
         </mat-form-field>
 
         <mat-form-field class="input">
-            <mat-label>Firstname</mat-label>
+            <mat-label>{{ 'auth.firstName' | translate }}</mat-label>
             <input matInput formControlName="firstName" />
         </mat-form-field>
 
         <mat-form-field class="input">
-            <mat-label>Lastname</mat-label>
+            <mat-label>{{ 'auth.lastName' | translate }}</mat-label>
             <input matInput formControlName="lastName" />
         </mat-form-field>
 
         <button mat-raised-button type="submit" class="btn">
-            Зареєструвати
+            {{ 'auth.register' | translate }}
         </button>
 
     </form>
