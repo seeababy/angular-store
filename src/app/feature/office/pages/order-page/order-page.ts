@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { OrdersSelectors } from '../../../../core/ngxs/orders/orders.selectors';
@@ -11,7 +12,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
   styleUrl: './order-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [OrderItem, MatExpansionModule],
+  imports: [TranslateModule, OrderItem, MatExpansionModule],
 })
 export class OrderPage implements OnInit {
   private store = inject(Store);

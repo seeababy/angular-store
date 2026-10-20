@@ -7,17 +7,17 @@
     <div class="side-menu__section">
       <a class="menu-item" [routerLink]="AppRoutesConfig.Home" (click)="emitMenuClosed.emit()">
         <mat-icon class="icon" svgIcon="home"></mat-icon>
-        <span>Головна</span>
+        <span>{{ 'menu.home' | translate }}</span>
       </a>
 
       <a class="menu-item" [routerLink]="AppRoutesConfig.Basket" (click)="emitMenuClosed.emit()">
         <mat-icon class="icon" svgIcon="cart"></mat-icon>
-        <span>Кошик ({{ basketCount() }})</span>
+        <span>{{ 'menu.basket' | translate: { count: basketCount() } }}</span>
       </a>
 
       <a class="menu-item" [routerLink]="AppRoutesConfig.Office" (click)="emitMenuClosed.emit()">
         <mat-icon class="icon" svgIcon="user"></mat-icon>
-        <span>Особистий кабінет</span>
+        <span>{{ 'menu.office' | translate }}</span>
       </a>
     </div>
 
@@ -32,21 +32,21 @@
     <div class="divider"></div>
 
     <div class="side-menu__section">
-      <a class="link" routerLink="#">Про нас</a>
-      <a class="link" routerLink="#">Контакти</a>
-      <a class="link" routerLink="#">Оплата і доставка</a>
-      <a class="link" routerLink="#">Повернення</a>
-      <a class="link" routerLink="#">Гарантія</a>
-      <a class="link" routerLink="#">Акції</a>
-      <a class="link" routerLink="#">FAQ</a>
-      <a class="link" routerLink="#">Блог</a>
-      <a class="link" routerLink="#">Співпраця</a>
+      <a class="link" routerLink="#">{{ 'footer.aboutUs' | translate }}</a>
+      <a class="link" routerLink="#">{{ 'footer.contacts' | translate }}</a>
+      <a class="link" routerLink="#">{{ 'footer.paymentDelivery' | translate }}</a>
+      <a class="link" routerLink="#">{{ 'footer.returns' | translate }}</a>
+      <a class="link" routerLink="#">{{ 'footer.warranty' | translate }}</a>
+      <a class="link" routerLink="#">{{ 'footer.promotions' | translate }}</a>
+      <a class="link" routerLink="#">{{ 'footer.faq' | translate }}</a>
+      <a class="link" routerLink="#">{{ 'footer.blog' | translate }}</a>
+      <a class="link" routerLink="#">{{ 'footer.cooperation' | translate }}</a>
     </div>
 
     <div class="divider"></div>
 
     <div class="side-menu__social">
-      <h3 class="social-title">Ми в соцмережах</h3>
+      <h3 class="social-title">{{ 'footer.social' | translate }}</h3>
       <div class="social-icons">
         <div class="social-item"><mat-icon class="icon" svgIcon="facebook"></mat-icon></div>
         <div class="social-item"><mat-icon class="icon" svgIcon="instagram"></mat-icon></div>

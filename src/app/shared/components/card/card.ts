@@ -1,3 +1,4 @@
+import { ApiTextPipe } from '../../pipes/api-text.pipe';
 import { ChangeDetectionStrategy, Component, inject, input, computed } from '@angular/core';
 import { Product } from '../../entities/interfaces/product.interface';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,7 +14,7 @@ import { BasketSelectors } from '../../../core/ngxs/basket/basket.selectors';
   styleUrl: './card.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatIconModule, RouterModule],
+  imports: [ApiTextPipe, MatIconModule, RouterModule],
 })
 export class Card {
   private store = inject(Store);

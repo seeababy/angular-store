@@ -1,4 +1,4 @@
 <div class="link_main" (click)="go()">
   <mat-icon class="icon" [svgIcon]="item()?.slug || ''"></mat-icon>
-  <span class="text">{{ item()?.name }}</span>
+  <span class="text">{{ item()?.name | apiText: 'categories' }}</span>
 </div>

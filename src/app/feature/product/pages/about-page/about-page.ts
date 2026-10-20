@@ -1,3 +1,5 @@
+import { ApiTextPipe } from '../../../../shared/pipes/api-text.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -18,7 +20,7 @@ import { UpdateCart } from '../../../../core/ngxs/basket/basket.actions';
 @Component({
   selector: 'app-about-page',
   standalone: true,
-  imports: [AboutSlider, MatIcon],
+  imports: [ApiTextPipe, TranslateModule, AboutSlider, MatIcon],
   templateUrl: './about-page.html',
   styleUrl: './about-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

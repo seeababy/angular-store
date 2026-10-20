@@ -1,3 +1,4 @@
+import { ApiTextPipe } from '../../pipes/api-text.pipe';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { ProductsSelectors } from '../../../core/ngxs/products/products.selectors';
@@ -10,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './breadcrumbs.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatIcon],
+  imports: [ApiTextPipe, MatIcon],
 })
 export class Breadcrumbs {
   private store = inject(Store);

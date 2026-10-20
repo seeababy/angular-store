@@ -4,11 +4,11 @@
 
   <div class="footer">
     <button class="confirm-btn" (click)="submitForm()" [disabled]="!isFormValid">
-      Замовлення підтверджую
+      {{ 'order.confirm' | translate }}
     </button>
 
     <div class="summary">
-      <span class="label">Разом:</span>
+      <span class="label">{{ 'order.total' | translate }}</span>
       <span class="total">{{ total() }} ₴</span>
     </div>
   </div>

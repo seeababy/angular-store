@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { CommonModule } from '@angular/common';
@@ -14,7 +15,7 @@ import { AppRoutesConfig } from '../../../../app.routes-config';
   styleUrls: ['./basket-page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, MatIconModule, BasketCard, RouterLink],
+  imports: [TranslateModule, CommonModule, MatIconModule, BasketCard, RouterLink],
 })
 export class BasketPage {
   private store = inject(Store);

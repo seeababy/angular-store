@@ -1,10 +1,10 @@
 <div class="reviews">
-  <h2 class="reviews__title">Відгуки</h2>
+  <h2 class="reviews__title">{{ 'product.reviews' | translate }}</h2>
 
   <div class="reviews__layout">
     <div class="reviews__left">
       <app-reviews-statistic [reviews]="reviews()"></app-reviews-statistic>
-      <button class="write-review-btn" (click)="openDialog()">Написати відгук</button>
+      <button class="write-review-btn" (click)="openDialog()">{{ 'product.writeReview' | translate }}</button>
     </div>
 
     <div class="reviews__right">

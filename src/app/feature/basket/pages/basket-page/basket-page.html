@@ -7,22 +7,22 @@
   </div>
   } @if (totalCount() === 0) {
   <div class="basket-empty">
-    <img src="/assets/images/basket/empty-basket.jpg" alt="Empty basket" />
-    <p>Кошик порожній</p>
+    <img src="/assets/images/basket/empty-basket.jpg" [alt]="'basket.emptyAlt' | translate" />
+    <p>{{ 'basket.empty' | translate }}</p>
   </div>
   } @else {
 
   <app-basket-card />
 
   <div class="basket-footer">
-    <button class="continue-btn" [routerLink]="['/', AppRoutesConfig.Home]">Продовжити покупки</button>
+    <button class="continue-btn" [routerLink]="['/', AppRoutesConfig.Home]">{{ 'basket.continue' | translate }}</button>
 
     <div class="summary">
       <div class="total">
         <span>{{ total() }} ₴</span>
       </div>
 
-      <button class="checkout-btn" [routerLink]="['/', AppRoutesConfig.MakeOrder]">Оформити замовлення</button>
+      <button class="checkout-btn" [routerLink]="['/', AppRoutesConfig.MakeOrder]">{{ 'basket.checkout' | translate }}</button>
     </div>
   </div>
   }

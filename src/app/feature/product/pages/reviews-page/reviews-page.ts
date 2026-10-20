@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { UserSelectors } from '../../../../core/ngxs/user/user.selectors';
@@ -17,7 +18,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrl: './reviews-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ReviewsDialog, ReviewsItem, ReviewsStatistic],
+  imports: [TranslateModule, ReviewsDialog, ReviewsItem, ReviewsStatistic],
 })
 export class ReviewsPage implements OnInit {
   private dialog = inject(MatDialog);

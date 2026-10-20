@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { Auth } from '../../services/auth';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -17,7 +18,7 @@ import { SetToken } from '../../../../core/ngxs/user/user.actions';
   styleUrl: './registration.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
+  imports: [TranslateModule, 
     ReactiveFormsModule,
     MatInputModule,
     MatFormFieldModule,

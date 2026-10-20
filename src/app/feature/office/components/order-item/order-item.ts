@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { IOrder } from '../../../make-orders/entities/interfaces/order.interface';
 import { OrderCard } from '../../../make-orders/components/order-card/order-card';
@@ -9,7 +10,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
   styleUrl: './order-item.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [OrderCard, MatExpansionModule],
+  imports: [TranslateModule, OrderCard, MatExpansionModule],
 })
 export class OrderItem {
   order = input.required<IOrder>();

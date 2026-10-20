@@ -1,3 +1,5 @@
+import { ApiTextPipe } from '../../../../shared/pipes/api-text.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ProductsSelectors } from '../../../../core/ngxs/products/products.selectors';
 import { Store } from '@ngxs/store';
@@ -8,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-characteristics-page',
   standalone: true,
-  imports: [],
+  imports: [ApiTextPipe, TranslateModule, ],
   templateUrl: './characteristics-page.html',
   styleUrl: './characteristics-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

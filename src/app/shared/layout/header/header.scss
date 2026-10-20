@@ -158,6 +158,22 @@
     margin-left: auto;
   }
 
+  &__lang {
+    background: transparent;
+    border: 1px solid yellow;
+    border-radius: 6px;
+    color: yellow;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 4px 8px;
+    transition: 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 0, 0.15);
+    }
+  }
+
   &__btn {
     width: 30px;
     height: 30px;

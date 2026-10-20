@@ -1,3 +1,4 @@
+import { ApiTextPipe } from '../../../../shared/pipes/api-text.pipe';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatIcon } from "@angular/material/icon";
 import { RemoveFromCart, UpdateCart } from '../../../../core/ngxs/basket/basket.actions';
@@ -7,7 +8,7 @@ import { Store } from '@ngxs/store';
 @Component({
   selector: 'app-basket-card',
   standalone: true,
-  imports: [MatIcon],
+  imports: [ApiTextPipe, MatIcon],
   templateUrl: './basket-card.html',
   styleUrl: './basket-card.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

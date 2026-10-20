@@ -11,6 +11,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter } from 'rxjs/operators';
 import { GetViewedProducts } from './core/ngxs/products/products.actions';
 import { GetCart } from './core/ngxs/basket/basket.actions';
+import { LanguageService } from './core/services/language.service';
 
 @Component({
   selector: 'app-root',
@@ -24,8 +25,10 @@ export class AppComponent implements OnInit {
   private sanitizer = inject(DomSanitizer);
   private store = inject(Store);
   private destroyRef = inject(DestroyRef);
+  private languageService = inject(LanguageService);
 
   constructor() {
+    this.languageService.init();
     this.registerIcons(BaseIcons, 'assets/icons/', '.svg');
   }
 

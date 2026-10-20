@@ -2,50 +2,50 @@
   @if (user(); as user) {
 
   <div class="card">
-    <div class="title">Ваші контактні дані</div>
+    <div class="title">{{ 'order.contactData' | translate }}</div>
     <form [formGroup]="formGroup" class="form">
       <div class="row">
         <div class="field readonly">
-          <div class="label">Ім'я</div>
+          <div class="label">{{ 'order.firstName' | translate }}</div>
           <div class="value">{{ user.firstName }}</div>
         </div>
 
         <div class="field readonly">
-          <div class="label">Прізвище</div>
+          <div class="label">{{ 'order.lastName' | translate }}</div>
           <div class="value">{{ user.lastName }}</div>
         </div>
       </div>
 
       <div class="row">
         <div class="field readonly">
-          <div class="label">Пошта</div>
+          <div class="label">{{ 'order.email' | translate }}</div>
           <div class="value">{{ user.email }}</div>
         </div>
 
         <div class="field readonly">
-          <div class="label">Телефон</div>
+          <div class="label">{{ 'order.phone' | translate }}</div>
           <div class="value">{{ user.phoneNumber }}</div>
         </div>
       </div>
 
       <div class="row">
         <mat-form-field class="field" appearance="outline">
-          <input matInput placeholder="Адреса" formControlName="address" />
+          <input matInput [placeholder]="'order.address' | translate" formControlName="address" />
         </mat-form-field>
 
         <mat-form-field class="field" appearance="outline">
-          <input matInput placeholder="Місто" formControlName="city" />
+          <input matInput [placeholder]="'order.city' | translate" formControlName="city" />
         </mat-form-field>
       </div>
 
       <div class="row">
         <mat-form-field class="field" appearance="outline">
-          <input matInput placeholder="Поштовий код" formControlName="postalCode" />
+          <input matInput [placeholder]="'order.postalCode' | translate" formControlName="postalCode" />
         </mat-form-field>
       </div>
 
       <mat-form-field class="notes" appearance="outline">
-        <textarea matInput placeholder="Нотатки" formControlName="notes"></textarea>
+        <textarea matInput [placeholder]="'order.notes' | translate" formControlName="notes"></textarea>
       </mat-form-field>
     </form>
   </div>

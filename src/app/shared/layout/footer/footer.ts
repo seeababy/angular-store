@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatIcon } from "@angular/material/icon";
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-footer',
@@ -7,6 +8,6 @@ import { MatIcon } from "@angular/material/icon";
   styleUrl: './footer.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatIcon],
+  imports: [MatIcon, TranslateModule],
 })
 export class Footer { }

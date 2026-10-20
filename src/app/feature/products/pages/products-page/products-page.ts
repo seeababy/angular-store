@@ -1,3 +1,5 @@
+import { ApiTextPipe } from '../../../../shared/pipes/api-text.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -64,7 +66,7 @@ import { values } from 'lodash';
   styleUrl: './products-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
+  imports: [ApiTextPipe, TranslateModule, 
     Card,
     FormsModule,
     ReactiveFormsModule,
@@ -111,27 +113,27 @@ export class ProductsPage implements OnInit {
   sortOptions = [
     {
       value: 'price_asc',
-      label: 'Від дешевих до дорогих',
+      label: 'products.sort.priceAsc',
     },
     {
       value: 'price_desc',
-      label: 'Від дорогих до дешевих',
+      label: 'products.sort.priceDesc',
     },
     {
       value: 'rating_desc',
-      label: 'За рейтингом',
+      label: 'products.sort.rating',
     },
     {
       value: 'views_desc',
-      label: 'За популярністю',
+      label: 'products.sort.popularity',
     },
     {
       value: 'newest',
-      label: 'Новинки',
+      label: 'products.sort.newest',
     },
     {
       value: 'oldest',
-      label: 'Спочатку старі',
+      label: 'products.sort.oldest',
     },
   ];
 

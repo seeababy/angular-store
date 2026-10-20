@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -17,7 +18,7 @@ import { UserSelectors } from '../../../../core/ngxs/user/user.selectors';
 @Component({
   selector: 'app-card-slider',
   standalone: true,
-  imports: [Card],
+  imports: [TranslateModule, Card],
   templateUrl: './card-slider.html',
   styleUrl: './card-slider.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

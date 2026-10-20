@@ -2,7 +2,7 @@
   <mat-expansion-panel-header class="header">
     <div class="header-content">
       <div class="left">
-        <div class="title">Замовлення №{{ order()?.orderNumber }}</div>
+        <div class="title">{{ 'office.orderNumber' | translate: { number: order()?.orderNumber } }}</div>
 
         @if (!opened) {
         <div class="images">

@@ -11,7 +11,7 @@
 
       <form class="user-form" [formGroup]="formGroup" (ngSubmit)="submit()">
         <div class="user-row">
-          <div class="user-row__label">Ім'я</div>
+          <div class="user-row__label">{{ 'office.firstName' | translate }}</div>
 
           @if (!isEditMode) {
           <div class="user-row__value">{{ user()?.firstName }}</div>
@@ -23,7 +23,7 @@
         </div>
 
         <div class="user-row">
-          <div class="user-row__label">Прізвище</div>
+          <div class="user-row__label">{{ 'office.lastName' | translate }}</div>
 
           @if (!isEditMode) {
           <div class="user-row__value">{{ user()?.lastName }}</div>
@@ -35,7 +35,7 @@
         </div>
 
         <div class="user-row">
-          <div class="user-row__label">Дата народження</div>
+          <div class="user-row__label">{{ 'office.birthday' | translate }}</div>
 
           @if (!isEditMode) {
           <div class="user-row__value">{{ user()?.birthdayDate }}</div>
@@ -49,7 +49,7 @@
         </div>
 
         <div class="user-row">
-          <div class="user-row__label">Телефон</div>
+          <div class="user-row__label">{{ 'office.phone' | translate }}</div>
 
           @if (!isEditMode) {
           <div class="user-row__value">{{ user()?.phoneNumber }}</div>
@@ -68,7 +68,7 @@
           [class.user-form__submit--active]="!formGroup.pristine"
           [disabled]="formGroup.pristine"
         >
-          Редагувати
+          {{ 'office.edit' | translate }}
         </button>
         }
       </form>
