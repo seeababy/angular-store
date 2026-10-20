@@ -4,7 +4,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  DestroyRef,
   effect,
   inject,
   OnInit,
@@ -21,18 +20,12 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 
-import { MatSliderModule } from '@angular/material/slider';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
 import { KeyValuePipe } from '@angular/common';
-
-import { debounceTime, distinctUntilChanged } from 'rxjs';
-
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { ProductsSelectors } from '../../../../core/ngxs/products/products.selectors';
 
@@ -51,6 +44,9 @@ import { Card } from '../../../../shared/components/card/card';
 import { Breadcrumbs } from '../../../../shared/components/breadcrumbs/breadcrumbs';
 import { Paginator } from '../../../../shared/components/paginator/paginator';
 import { ProductsPageSkeleton } from '../../components/products-page-skeleton/products-page-skeleton';
+import { RangeFilterComponent } from '../../components/range-filter/range-filter';
+import { SelectFilterComponent } from '../../components/select-filter/select-filter';
+import { MultiselectFilterComponent } from '../../components/multiselect-filter/multiselect-filter';
 
 import { Category } from '../../../../shared/entities/interfaces/category.interface';
 
@@ -66,12 +62,10 @@ import { values } from 'lodash';
   styleUrl: './products-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ApiTextPipe, TranslateModule, 
+  imports: [ApiTextPipe, TranslateModule,
     Card,
     FormsModule,
     ReactiveFormsModule,
-    MatSliderModule,
-    MatCheckboxModule,
     MatSelectModule,
     MatFormFieldModule,
     MatIconModule,
@@ -79,13 +73,15 @@ import { values } from 'lodash';
     Breadcrumbs,
     Paginator,
     ProductsPageSkeleton,
+    RangeFilterComponent,
+    SelectFilterComponent,
+    MultiselectFilterComponent,
     KeyValuePipe,
   ],
 })
 export class ProductsPage implements OnInit {
   private store = inject(Store);
   private route = inject(ActivatedRoute);
-  private destroyRef = inject(DestroyRef);
   private cdr = inject(ChangeDetectorRef);
 
   products = this.store.selectSignal(ProductsSelectors.products);
@@ -220,88 +216,8 @@ export class ProductsPage implements OnInit {
     return this.availableFilters().find((item) => item.field === field);
   }
 
-  getRangeValue(filter: ProductFilter, index: 0 | 1): number {
-    if (filter.type !== 'range') {
-      return 0;
-    }
-
-    const control = this.filtersForm.get(filter.field);
-
-    if (!control) {
-      return index === 0 ? filter.minV : filter.maxV;
-    }
-
-    const controlName = index === 0 ? 'min' : 'max';
-    const value = control.get(controlName)?.value;
-
-    return Number(value ?? (index === 0 ? filter.minV : filter.maxV));
-  }
-
-  updateRangeFilter(field: string, index: 0 | 1, value: number) {
-    const filter = this.availableFilters().find((item) => item.field === field);
-
-    if (!filter || filter.type !== 'range') return;
-
-    const currentValue = this.getFilterValue(field);
-
-    let range: [number | undefined, number | undefined];
-
-    if (Array.isArray(currentValue) && currentValue.length === 2) {
-      range = [Number(currentValue[0]), Number(currentValue[1])];
-    } else {
-      range = [filter.minV, filter.maxV];
-    }
-
-    range[index] = value;
-
-    this.store.dispatch(
-      new UpdateFilters({
-        page: 1,
-        appliedFilters: {
-          [field]: range,
-        },
-      }),
-    );
-  }
-
-  toggleValue(field: string, value: string) {
-    const currentValue = this.getFilterValue(field);
-
-    const values = Array.isArray(currentValue) ? [...(currentValue as string[])] : [];
-
-    const index = values.indexOf(value);
-
-    if (index >= 0) {
-      values.splice(index, 1);
-    } else {
-      values.push(value);
-    }
-
-    this.store.dispatch(
-      new UpdateFilters({
-        page: 1,
-        appliedFilters: {
-          [field]: values,
-        },
-      }),
-    );
-  }
-
-  selectSingleValue(field: string, value: string) {
-    const formArray = this.filtersForm.get(field)?.get('values') as FormArray;
-
-    formArray.controls.forEach((control) => {
-      control.get('checked')?.setValue(control.get('value')?.value === value, { emitEvent: false });
-    });
-
-    this.store.dispatch(
-      new UpdateFilters({
-        page: 1,
-        appliedFilters: {
-          [field]: [value],
-        },
-      }),
-    );
+  getGroup(field: string): FormGroup {
+    return this.filtersForm.get(field) as FormGroup;
   }
 
   isSelected(field: string, value: string): boolean {
@@ -337,10 +253,6 @@ export class ProductsPage implements OnInit {
     );
   }
 
-  getArrayControls(key: string) {
-    return (this.filtersForm.get(key)?.get('values') as FormArray).controls;
-  }
-
   private shouldBuildFiltersForm(filters: ProductFilter[]): boolean {
     return this.builtFromFilters !== filters;
   }
@@ -368,26 +280,6 @@ export class ProductsPage implements OnInit {
         const minControl = new FormControl(this.getInitialRangeValue(filter, 0));
 
         const maxControl = new FormControl(this.getInitialRangeValue(filter, 1));
-
-        minControl.valueChanges
-          .pipe(debounceTime(5000), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
-          .subscribe((value) => {
-            if (value == null) {
-              return;
-            }
-
-            this.updateRangeFilter(filter.field, 0, Number(value));
-          });
-
-        maxControl.valueChanges
-          .pipe(debounceTime(500), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
-          .subscribe((value) => {
-            if (value == null) {
-              return;
-            }
-
-            this.updateRangeFilter(filter.field, 1, Number(value));
-          });
 
         this.filtersForm.addControl(
           filter.field,
